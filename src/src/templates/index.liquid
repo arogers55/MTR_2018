@@ -1,2 +1,28 @@
-{{ content_for_index }}
+<div class="container">
+	<!-- <div class="row">
+		<div class="col-sm border border-primary">
+		  <a href="#">
+		    {{ 'product-' | append: 1 | placeholder_svg_tag: 'placeholder-svg' }}
+		  </a>
+		</div>
+	</div> -->
 
+	{% section 'featured-products-carousel' %}
+
+	{% include 'mission-statement' %}
+
+	{% section 'secondary-navigation' %}
+
+	{% include 'chat-button' %}
+
+	{% section 'featured-product' %}
+
+	{% section 'featured-product' %}
+
+	{% section 'bulk-orders' %}
+
+	{% include 'social-links' %}
+
+	{% include 'newsletter-signup' %}
+	
+</div>
