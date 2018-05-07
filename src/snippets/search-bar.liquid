@@ -1,0 +1,50 @@
+
+  <!-- <form action="/search" method="get" role="search">
+    <label for="Search" class="label-hidden">
+      {{ 'general.search.placeholder' | t }}
+    </label>
+    <input type="search"
+           name="q"
+           id="Search"
+           value="{{ search.terms | escape }}"
+           placeholder="{{ 'general.search.placeholder' | t }}">
+    <button type="submit" class="btn">
+      {% include 'icon-search' %}
+      <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+    </button>
+  </form> -->
+  <!-- <div class="col">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-secondary" type="button" onclick="submitSearch()">
+          {% include 'icon-search' %}
+          <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+        </button>
+      </div>
+      <input type="search"
+            class="form-control"
+            name="q"
+            id="Search"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ 'general.search.placeholder' | t }}">
+    </div>
+  </div> -->
+    <form action="/search" method="get" role="search" class="form-inline">
+      <!-- <div class="input-group-sm mb-3">
+        <input type="search" class="form-control" id="inputSearch" placeholder="{{ 'general.search.placeholder' | t }}">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-secondary">
+                {% include 'icon-search' %}
+          </button>
+        </div>
+      </div> -->
+      <div class="input-group input-group-sm mb-3">
+        <input type="text" class="form-control" aria-label="Search" placeholder="{{ 'general.search.placeholder' | t }}">
+        <div class="input-group-append">
+          <button class="input-group btn btn-secondary"type="submit">
+            {% include 'icon-search' %}
+          </button>
+        </div>
+      </div>
+    </form>
+

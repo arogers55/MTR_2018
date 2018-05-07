@@ -11,7 +11,11 @@ node_modules
 dist
 upload
 deploy.log
-config.yml
+config/shopify.yml
+npm-debug.log
+.env
+.env.*
+
 
 # Compiled source #
 ###################
@@ -54,8 +58,10 @@ Thumbs.db
 # Custom #
 ######################
 *.sass-cache*
+.cache/*
 _site
 /.idea
+/.vscode
 secrets.json
 .jekyll-metadata
 .ruby-version
