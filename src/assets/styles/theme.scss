@@ -4,6 +4,7 @@
  * [replace with theme name] | Built with Slate
  */
 
+ 
 @import '~normalize.css/normalize';
 
 // Settings
@@ -38,4 +39,5 @@
 // Templates
 @import './templates/gift_card';
 
-@import "~bootstrap/scss/bootstrap";
+@import './static/bootstrap';
+
