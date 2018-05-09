@@ -1,34 +1,56 @@
-<div class="container">
+<div class="main-content container pl-0 pr-0">
 
-	{% section 'featured-jumbotron' %}
+	<div class="row">
+		<div class="col p-1">
+			{% section 'featured-jumbotron' %}
+		</div>
+	</div>
 
 	<div class="row">
 		<div class="col">
 			{% section 'secondary-navigation' %}
 		</div>
-		<div class="col">
+		<div class="col bg-dark">
 			{% section 'featured-product' %}
 		</div>
-		<div class="col">
+		<div class="col bg-dark">
 			{% section 'featured-product' %}
 		</div>
 	</div>
 
-	{% include 'newsletter-signup' %}
+	<div class="row">
+		<div class="col p-1">
+			{% section 'newsletter' %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col bg-dark">
+			{% section 'featured-product' %}
+		</div>
+		<div class="col bg-dark">
+			{% section 'featured-product' %}
+		</div>
+		<div class="col bg-dark">
+			{% section 'featured-product' %}
+		</div>
+	</div>
 
 	<div class="row">
 		<div class="col">
-			{% section 'featured-product' %}
-		</div>
-		<div class="col">
-			{% section 'featured-product' %}
-		</div>
-		<div class="col">
-			{% section 'featured-product' %}
+			{% section 'mission-statement' %}
 		</div>
 	</div>
 
-	{% include 'mission-statement' %}
-
 	
 </div>
+
+<style>
+	.main-content {
+		max-width: 2000px
+	}
+
+	.row {
+		margin: 0 0 0 0;
+	}
+</style>
