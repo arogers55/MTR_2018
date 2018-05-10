@@ -29,7 +29,7 @@
             placeholder="{{ 'general.search.placeholder' | t }}">
     </div>
   </div> -->
-    <form action="/search" method="get" role="search" class="form-inline">
+    <form action="/search" method="get" role="search" class="form-inline w-100">
       <!-- <div class="input-group-sm mb-3">
         <input type="search" class="form-control" id="inputSearch" placeholder="{{ 'general.search.placeholder' | t }}">
         <div class="input-group-append">
@@ -38,10 +38,10 @@
           </button>
         </div>
       </div> -->
-      <div class="input-group input-group-sm mb-3">
+      <div class="input-group input-group-sm">
         <input type="text" class="form-control" aria-label="Search" placeholder="{{ 'general.search.placeholder' | t }}">
         <div class="input-group-append">
-          <button class="input-group btn btn-secondary"type="submit">
+          <button class="input-group btn btn-warning"type="submit">
             {% include 'icon-search' %}
           </button>
         </div>

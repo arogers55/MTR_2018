@@ -16,12 +16,21 @@
   },
   "devDependencies": {
     "@shopify/slate-tools": ">=1.0.0-beta.1",
+    "autoprefixer": "^8.4.1",
     "babel-preset-shopify": "^16.2.0",
+    "bootstrap": "^4.1.1",
+    "css-loader": "^0.28.11",
     "eslint-plugin-shopify": "^19.0.0",
+    "exports-loader": "^0.7.0",
+    "imports-loader": "^0.8.0",
+    "node-sass": "^4.9.0",
     "postcss-loader": "^2.1.5",
+    "resolve-url-loader": "^2.3.0",
     "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
     "stylelint-config-prettier": "^3.0.4",
-    "stylelint-config-shopify": "^5.0.0"
+    "stylelint-config-shopify": "^5.0.0",
+    "url-loader": "^1.0.1"
   },
   "dependencies": {
     "@shopify/theme-a11y": "^1.0.0-alpha.3",
@@ -31,8 +40,8 @@
     "@shopify/theme-rte": "^1.0.0-alpha.3",
     "@shopify/theme-sections": "^1.0.0-alpha.4",
     "@shopify/theme-variants": "^1.0.0-alpha.5",
-    "bootstrap": "4.1.0",
-    "jquery": "^3.2.1",
+    "bootstrap-loader": "^2.2.0",
+    "jquery": "^3.3.1",
     "lazysizes": "^4.0.2",
     "lodash-es": "^4.17.4",
     "normalize.css": "^7.0.0",

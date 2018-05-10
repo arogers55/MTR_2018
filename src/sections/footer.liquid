@@ -1,46 +1,50 @@
 <footer>
-
-  {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
-  <ul>
-    {% for social in social_accounts %}
-      {%- assign social_handle = social | handleize -%}
-      {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
-      {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
-
-      {% if settings[social_link] != blank %}
-        <li>
-          <a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
-            {% include social_icon %}
-            <span class="icon-fallback-text">{{ social }}</span>
-          </a>
-        </li>
-      {% endif %}
-
-    {% endfor %}
-  </ul>
-
-  {% if section.settings.show_payment_icons %}
-    {% unless shop.enabled_payment_types == empty %}
-      {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,google_pay,interac,jcb,litecoin,maestro,master,paypal,visa' | split: ',' -%}
-
-      <span class="visually-hidden">{{ 'layout.footer.payment_methods' | t }}</span>
-      <ul class="payment-icons">
-        {% for type in shop.enabled_payment_types %}
-          {% if payment_icons_available contains type %}
-            <li>
-              {%- assign icon_name = type | prepend: 'icon-' -%}
-              {% include icon_name %}
-              <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
-            </li>
+  <div class="row bg-dark text-white pt-3 pb-1">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h3><strong>CONTACT US</strong></h3>
+          <p class="text-white-50"><strong>{{ section.settings.company-description }}</strong></p>
+          <address class="text-white-50">
+            <strong>
+              {{ section.settings.street-address }} <br>
+              {{ section.settings.city | append: ", " | append: section.settings.state | append: " " | append: section.settings.zip-code }} <br><br>
+              {{ section.settings.phone-number }}<br>
+              <a href="{{ section.settings.e-mail }}">{{ section.settings.e-mail }}</a>
+            </strong>
+          </address>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-white-50">
+          {% include "social-footer-links" %}
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h3><strong>CUSTOMER CARE</strong></h3>
+          {%- assign footer_linklist = section.settings.footer_linklist -%}
+          {% if linklists[footer_linklist].links.size > 0 %}
+            <ul class="nav flex-column">
+              {% for link in linklists[footer_linklist].links %}
+                <li class="nav-item">
+                  <a href="{{ link.url }}" class="nav-link text-white-50 h5"><strong>{{ link.title }}</strong></a>
+                </li>
+              {% endfor %}
+            </ul>
           {% endif %}
-        {% endfor %}
-      </ul>
-    {% endunless %}
-  {% endif %}
-
-
-  <div>
-    <small>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  <div class="row black text-light pt-2 pb-2">
+    <div class="col">
+      <small>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}</small>
+    </div>
   </div>
 </footer>
 
@@ -55,12 +59,54 @@
         "default": "footer"
       },
       {
-        "type": "checkbox",
-        "id": "show_payment_icons",
-        "label": "Show payment icons",
-        "default": false
+        "type": "textarea",
+        "id": "company-description",
+        "label": "Description of the company",
+        "default": "Company Description Here"
+      },
+      {
+        "type": "text",
+        "id": "street-address",
+        "label": "Street address of the company",
+        "default": "12345 Road Avenue"
+      },
+      {
+        "type": "text",
+        "id": "city",
+        "label": "City where company is located",
+        "default": "Eugene"
+      },
+      {
+        "type": "text",
+        "id": "state",
+        "label": "State where company is located",
+        "default": "OR"
+      },
+      {
+        "type": "text",
+        "id": "zip-code",
+        "label": "Zip-Code",
+        "default": "97402"
+      },
+      {
+        "type": "text",
+        "id": "phone-number",
+        "label": "Contact Phone Number",
+        "default": "(123) 234 3456"
+      },
+      {
+        "type": "text",
+        "id": "e-mail",
+        "label": "Contact E-Mail",
+        "default": "example@example.com"
       }
     ]
   }
 
 {% endschema %}
+
+<style type="text/css">
+  .black {
+    background-color: black
+  }
+</style>
