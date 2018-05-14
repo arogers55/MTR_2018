@@ -45,6 +45,7 @@
     "lazysizes": "^4.0.2",
     "lodash-es": "^4.17.4",
     "normalize.css": "^7.0.0",
+    "npm": "^6.0.0",
     "popper.js": "^1.14.3"
   },
   "scripts": {
