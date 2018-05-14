@@ -1,11 +1,13 @@
 <footer>
-  <div class="row bg-dark text-white pt-3 pb-1">
+  <div class="row footer-background text-white pt-4 pb-3">
     <div class="col">
+
+      <!-- Contact Information Section -->
       <div class="row">
         <div class="col">
-          <h3><strong>CONTACT US</strong></h3>
-          <p class="text-white-50"><strong>{{ section.settings.company-description }}</strong></p>
-          <address class="text-white-50">
+          <h4><strong>CONTACT US</strong></h4>
+          <p class="grey-text"><strong>{{ section.settings.company-description }}</strong></p>
+          <address class="grey-text">
             <strong>
               {{ section.settings.street-address }} <br>
               {{ section.settings.city | append: ", " | append: section.settings.state | append: " " | append: section.settings.zip-code }} <br><br>
@@ -15,37 +17,121 @@
           </address>
         </div>
       </div>
-      <div class="row">
+
+      <!-- Social Media Links -->
+      <div class="row bottom-align w-100">
         <div class="col text-white-50">
           {% include "social-footer-links" %}
         </div>
       </div>
+
+
     </div>
+
     <div class="col">
+
+      <!-- Customer Care Links -->
       <div class="row">
         <div class="col">
-          <h3><strong>CUSTOMER CARE</strong></h3>
-          {%- assign footer_linklist = section.settings.footer_linklist -%}
-          {% if linklists[footer_linklist].links.size > 0 %}
+          <h4><strong>CUSTOMER CARE</strong></h4>
+          {%- assign customer_care_links = section.settings.customer_care_links -%}
+          {% if linklists[customer_care_links].links.size > 0 %}
             <ul class="nav flex-column">
-              {% for link in linklists[footer_linklist].links %}
+              {% for link in linklists[customer_care_links].links %}
                 <li class="nav-item">
-                  <a href="{{ link.url }}" class="nav-link text-white-50 h5"><strong>{{ link.title }}</strong></a>
+                  <a href="{{ link.url }}" class="nav-link grey-text h6 pl-0 pt-1 pb-1"><strong>{{ link.title }}</strong></a>
                 </li>
               {% endfor %}
             </ul>
           {% endif %}
         </div>
       </div>
+
+      <!-- Payment Option Icons -->
+      <div class="row fa-3x text-white-50 align-items-end bottom-align">
+        <div class="col">
+          <i class="fab fa-cc-amex grey-text"></i>
+        </div>
+        <div class="col">
+          <i class="fab fa-cc-discover grey-text"></i>
+        </div>
+        <div class="col">
+          <i class="fab fa-cc-mastercard grey-text"></i>
+        </div>
+        <div class="col">
+          <i class="fab fa-cc-paypal grey-text"></i>
+        </div>
+        <div class="col">
+          <i class="fab fa-cc-visa grey-text"></i>
+        </div>
+      </div>
+
     </div>
     <div class="col">
+      <div class="row pb-2">
+        <div class="col">
+          <h4><strong>{{ section.settings.newsletter-subheading }}</strong></h4>
+        </div>
+      </div>
+      <div class="row mb-2 pb-2">
+        <div class="col align-self-center">
+          {% form 'customer' %}
+            {% if form.posted_successfully? %}
+              <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+            {% else %}
+            {{ form.errors | default_errors }}
+            <div class="input-group">
+                <input type="email" class="form-control" 
+                  name="contact[email]"
+                  id="Email"
+                  value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
+                  placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                  autocorrect="off"
+                  autocapitalize="off">
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="input-group-append">
+                  <button class="btn btn-warning" type="submit" name="commit" id="Subscribe">
+                    <span>{{ 'general.newsletter_form.submit' | t }}</span>
+                  </button>
+                </div>
+              {% endif %}
+            </div>
+          {% endform %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-primary test-review-height" role="alert">
+            Reviews Here
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row black text-light pt-2 pb-2">
+
+  <div class="row black pt-1 pb-1">
     <div class="col">
-      <small>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}</small>
+      {%- assign footer_linklist = section.settings.footer_linklist -%}
+      {% if linklists[footer_linklist].links.size > 0 %}
+        <ul class="nav justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link grey-text">
+              <small class=" grey-text">&copy;{{ 'now' | date: "%Y" }} {{ 'layout.footer.copyright' | t }}</small>
+            </a>
+          </li>
+          {% for link in linklists[footer_linklist].links %}
+            <li class="nav-item pl-0 pr-0">
+              <a class="nav-link pl-0 pr-0"><small class="dot grey-text align-middle"></small></a>
+            </li>
+            <li class="nav-item pl-0 pr-0">
+              <a href="{{ link.url }}" class="nav-link grey-text"><small>{{ link.title }}</small></a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
   </div>
+
 </footer>
 
 {% schema %}
@@ -54,9 +140,21 @@
     "settings": [
       {
         "type": "link_list",
-        "id": "footer_linklist",
-        "label": "First menu",
+        "id": "customer_care_links",
+        "label": "Links for Customer Care pages",
         "default": "footer"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_linklist",
+        "label": "Links for bottom of footer",
+        "default": "footer"
+      },
+      {
+        "type": "text",
+        "id": "newsletter-subheading",
+        "label": "Reward for Newsletter Sign-up",
+        "default": "Signup Reward Goes Here"
       },
       {
         "type": "textarea",
@@ -106,7 +204,28 @@
 {% endschema %}
 
 <style type="text/css">
+  .footer-background {
+    background-color: #191919;
+  }
+
   .black {
     background-color: black
+  }
+
+  .test-review-height {
+    height: 300px;
+  }
+
+  .bottom-align {
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .dot {
+    height: 2px;
+    width: 2px;
+    background-color: #aaa;
+    border-radius: 50%;
+    display: inline-block;
   }
 </style>
