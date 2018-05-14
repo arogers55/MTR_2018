@@ -1,7 +1,7 @@
 <footer>
   <div class="row footer-background text-white pt-4 pb-3">
-    <div class="col">
 
+    <div class="col-xs-12 col-md-4 mb-3 mb-md-0">
       <!-- Contact Information Section -->
       <div class="row">
         <div class="col">
@@ -17,19 +17,15 @@
           </address>
         </div>
       </div>
-
       <!-- Social Media Links -->
       <div class="row bottom-align w-100">
         <div class="col text-white-50">
           {% include "social-footer-links" %}
         </div>
       </div>
-
-
     </div>
 
-    <div class="col">
-
+    <div class="col-xs-12 col-md-4 col-md-4 mb-3 mb-md-0">
       <!-- Customer Care Links -->
       <div class="row">
         <div class="col">
@@ -46,7 +42,6 @@
           {% endif %}
         </div>
       </div>
-
       <!-- Payment Option Icons -->
       <div class="row fa-3x text-white-50 align-items-end bottom-align">
         <div class="col">
@@ -65,9 +60,9 @@
           <i class="fab fa-cc-visa grey-text"></i>
         </div>
       </div>
-
     </div>
-    <div class="col">
+
+    <div class="col-xs-12 col-md-4 col-md-4 mb-3 mb-md-0">
       <div class="row pb-2">
         <div class="col">
           <h4><strong>{{ section.settings.newsletter-subheading }}</strong></h4>
@@ -131,7 +126,6 @@
       {% endif %}
     </div>
   </div>
-
 </footer>
 
 {% schema %}
@@ -216,9 +210,11 @@
     height: 300px;
   }
 
-  .bottom-align {
-    position: absolute;
-    bottom: 0px;
+  @media screen and (min-width: 768px) {
+      .bottom-align {
+        position: absolute;
+        bottom: 0px;
+      }
   }
 
   .dot {
