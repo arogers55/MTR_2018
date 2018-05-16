@@ -6,17 +6,7 @@
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Sale Items
-	    			  {% if section.settings.sale-items-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.sale-items-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.sale-items-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.sale-items-logo | img_url: image_size }} 1x, {{ section.settings.sale-items-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.sale-items-logo.alt | default: shop.name }}"
-	                         itemprop="sale-items-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-tags text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
@@ -27,10 +17,11 @@
 	                    <img src="{{ section.settings.mtr-collection-logo | img_url: image_size }}"
 	                         srcset="{{ section.settings.mtr-collection-logo | img_url: image_size }} 1x, {{ section.settings.mtr-collection-logo | img_url: image_size, scale: 2 }} 2x"
 	                         alt="{{ section.settings.mtr-collection-logo.alt | default: shop.name }}"
-	                         itemprop="mtr-collection-logo">
+	                         itemprop="mtr-collection-logo"
+													 class="mtr-collection-icon-styles">
 	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
+				    	<span class="badge badge-danger badge-pill">
+		                    !
 				    	</span>
 	                  {% endif %}
 				    </a>
@@ -38,65 +29,25 @@
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Active Shooter / Mass Casualty
-	    			  {% if section.settings.active-shooter-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.active-shooter-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.active-shooter-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.active-shooter-logo | img_url: image_size }} 1x, {{ section.settings.active-shooter-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.active-shooter-logo.alt | default: shop.name }}"
-	                         itemprop="active-shooter-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-shield-alt text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Batteries
-	    			  {% if section.settings.batteries-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.batteries-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.batteries-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.batteries-logo | img_url: image_size }} 1x, {{ section.settings.batteries-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.batteries-logo.alt | default: shop.name }}"
-	                         itemprop="batteries-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-battery-full text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Wildland Firefighting
-	    			  {% if section.settings.wildland-fire-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.wildland-fire-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.wildland-fire-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.wildland-fire-logo | img_url: image_size }} 1x, {{ section.settings.wildland-fire-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.wildland-fire-logo.alt | default: shop.name }}"
-	                         itemprop="wildland-fire-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-fire text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				      AEDs and Defibrillators
-	    			  {% if section.settings.aed-defib-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.aed-defib-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.aed-defib-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.aed-defib-logo | img_url: image_size }} 1x, {{ section.settings.aed-defib-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.aed-defib-logo.alt | default: shop.name }}"
-	                         itemprop="aed-defib-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-heartbeat text-danger"></i>
 					</a>
 				  </li>
 				</ul>
@@ -113,33 +64,13 @@
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Article title name 1
-	    			  {% if section.settings.articles-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.articles-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.articles-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.articles-logo | img_url: image_size }} 1x, {{ section.settings.articles-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.articles-logo.alt | default: shop.name }}"
-	                         itemprop="articles-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+	    			  <i class="fas fa-pencil-alt text-warning"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link text-dark" href="#">
 				    	Article title name 2
-	    			  {% if section.settings.articles-logo != blank %}
-	                    {% capture image_size %}{{ section.settings.articles-logo_max_width }}x{% endcapture %}
-	                    <img src="{{ section.settings.articles-logo | img_url: image_size }}"
-	                         srcset="{{ section.settings.articles-logo | img_url: image_size }} 1x, {{ section.settings.articles-logo | img_url: image_size, scale: 2 }} 2x"
-	                         alt="{{ section.settings.articles-logo.alt | default: shop.name }}"
-	                         itemprop="articles-logo">
-	                  {% else %}
-				    	<span class="badge badge-primary badge-pill">
-		                    0
-				    	</span>
-	                  {% endif %}
+							<i class="fas fa-pencil-alt text-warning"></i>
 				    </a>
 				  </li>
 				</ul>
@@ -148,44 +79,22 @@
 	</div>
 </section>
 
+<style>
+	.mtr-collection-icon-styles {
+		width: 1.33em;
+		height: 1.33em;
+		vertical-align: -15%;
+	}
+</style>
+
 {% schema %}
   {
     "name": "Secondary Navigation",
     "settings": [
       {
         "type": "image_picker",
-        "id": "sale-items-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
         "id": "mtr-collection-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "active-shooter-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "batteries-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "wildland-fire-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "aed-defib-logo",
-        "label": "Aed Defibrilator Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "articles-logo",
-        "label": "Articles Logo image"
+        "label": "MTR Collection Logo image"
       }
     ]
   }

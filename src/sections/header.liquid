@@ -4,6 +4,7 @@
     <div class="container m-0 p-0 mw-100">
       <div class="row justify-content-between">
 
+      {% comment %} Main site Logo {% endcomment %}
         <div class="h-100 col-auto p-0">
             {% if template.name == 'index' %}
               <h2 itemscope itemtype="http://schema.org/Organization">
@@ -28,7 +29,7 @@
             {% endif %}
         </div>
 
-        <!-- Mobile version Cart Button -->
+        <!-- Mobile version navigation buttons -->
         <div class="col-auto d-block d-md-none">
           <div class="row h-100 w-100 align-items-center">
             <div class="col pr-0">
@@ -48,8 +49,8 @@
           </div>
         </div>
 
-
-        <div class="col-xs-12 col-md-auto align-items-center">
+      {% comment %} Desktop Header Navigation {% endcomment %}
+        <div class="col-xs-12 col-md align-items-center">
           <div class="row justify-content-between h-100">
 
             <!-- Desktop version Account Links -->
@@ -71,12 +72,12 @@
 
             
 
-            <div class="col-xs-12 col-md-auto">
+            <div class="col-xs-12 col-md-9">
               {%include "nav-bar"%}
             </div>
 
             <!-- search bar -->
-            <div class="col-xs-12 col-md-auto align-self-center pl-0 pr-0 pb-3 pb-md-0">
+            <div class="col-xs-12 col-md-3 align-self-center pl-0 pr-0 pb-3 pb-md-0">
               {%include "search-bar"%}
             </div>
           </div>
@@ -230,6 +231,12 @@
     }
   </style>
 {% endif %}
+
+<style>
+  .logo-size-min {
+    min-width: 175px;
+  }
+</style>
 
 {% schema %}
   {

@@ -1,23 +1,76 @@
-<!-- <div class="row mt-3 mb-3">
-	<div class="col">
-	  <a href="#">
-	    {{ 'product-' | append: 3 | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
-	  </a>
-	</div>
-</div> -->
+{%- assign product = all_products[section.settings.product] -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_image = section.settings.featured_image -%}
 
-<section class="jumbotron jumbotron-fluid pb-0 mb-3">
-  <div class="container p-0 m-0 mw-100">
+{% if product == empty %}
+  {%- assign section_onboarding = true -%}
+  {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
+{% endif %}
+	
+<section data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3 featured-image-styles">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ featured_image | img_url: '800x' }}">
+  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+  <div class="container p-0 m-0 mw-100 position-absolute featured-jumbo-container">
   	<div class="row justify-content-end">
-  		<div class="col-6">
-			<h1 class="display-4 text-right">Product Name</h1>
-			<p class="lead text-right">This is a description of a product and it's details, etc.</p>
+  		<div class="col-xs-12 col-md-6">
+			<h1 class="display-4 text-right text-danger font-weight-bold">Product Name</h1>
+			<p class="lead text-right text-light">This is a description of a product and it's details, etc.</p>
   		</div>
 	</div>
 	<div class="row justify-content-end">
-		<div class="col-4 p-0">
+		<div class="col-xs-12 col-md-4 p-0">
 			<a class="btn btn-warning btn-lg w-100" href="#" role="button">Check it out</a>
 		</div>
 	</div>
   </div>
 </section>
+
+<style>
+
+	.featured-image-styles {
+		height: 400px;
+		background-image: url("{{ featured_image | img_url: '1920x' }}");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: auto 100%;
+	}
+
+	/* desktop size adjustments */
+	@media screen and (min-width: 768px) {
+		.featured-image-styles {
+			height: 500px;
+		}
+	}
+
+	.featured-jumbo-container {
+		bottom: 16px;
+	}
+
+</style>
+
+{% schema %}
+  {
+    "name": "Featured product",
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Product"
+      },
+      {
+        "type": "image_picker",
+        "id": "featured_image",
+        "label": "Featured image"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured product",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}
