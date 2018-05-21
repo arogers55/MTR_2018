@@ -14,6 +14,13 @@
 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
+
+      {% for link in linklists[link_list].links %}
+        <li class="nav-item">
+          <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+
       <li class="nav-item">
         <a class="nav-link" href="#">Medical <span class="sr-only">(current)</span></a>
       </li>
@@ -45,3 +52,17 @@
     background-color: black
   }
 </style>
+
+{% schema %}
+  {
+    "name": "Header Navigation",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "header_navigation_links",
+        "label": "Links for Header Navigation"
+      }
+    ]
+  }
+
+{% endschema %}

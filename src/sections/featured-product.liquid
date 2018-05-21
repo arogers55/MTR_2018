@@ -10,24 +10,28 @@
 <section data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3  featured-product-styles">
   <meta itemprop="name" content="{{ product.title }}">
   <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
-  <meta itemprop="image" content="{{ featured_product_image | img_url: '1920x' }}">
+  <meta itemprop="image" content="{{ featured_product_image | img_url: '400x' }}">
   <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">
     <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
-  	<div class="row justify-content-end">
-  		<div class="col-xs-12 col-md-6 mb-2">
+  	<div class="row justify-content-end  p-0 pr-md-3">
+  		<div class="col-12 mb-2">
         <h1 class="display-5 text-right text-danger font-weight-bold">
           {{ section.settings.product_title }}
         </h1>
-        <h6 class="text-right text-light font-weight-bold">
-          {{ section.settings.product_description }}
-        </h6>
+        <h5 class="text-right text-light font-weight-bold
+                {% if section.settings.use_dark_text == true %}
+                  text-dark
+                {% endif %}
+                ">
+          {{ section.settings.product_description | newline_to_br }}
+        </h5>
   		</div>
 	</div>
 	<div class="row justify-content-end">
-		<div class="col-xs-12 col-md-6 p-0">
+		<div class="col-xs-12 col-md-6  p-0 pr-md-3">
 			<a class="btn btn-warning btn-lg w-100" href="{{ product.url }}" role="button">Check it out</a>
 		</div>
 	</div>
@@ -45,7 +49,7 @@
 
 	.featured-product-styles {
 		height: 400px;
-		background-image: url("{{ featured_product_image | img_url: '1920x' }}");
+		background-image: url("{{ featured_product_image | img_url: '400x' }}");
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: cover;
@@ -82,6 +86,13 @@
         "type": "image_picker",
         "id": "featured_product_image",
         "label": "Featured image"
+      },
+      {
+        "type":      "checkbox",
+        "id":        "use_dark_text",
+        "label":     "Dark Text",
+        "default":   false,
+        "info":      "Use dark text for description?"
       }
     ]
   }

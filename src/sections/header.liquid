@@ -71,9 +71,19 @@
             </div>
 
             
-
+          <!-- header navigation -->
             <div class="col-xs-12 col-md-9">
-              {%include "nav-bar"%}
+              <nav class="navbar navbar-expand-md navbar-light pl-0 pb-0">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    {% for link in linklists.main-menu.links %}
+                      <li class="nav-item">
+                        <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </nav>
             </div>
 
             <!-- search bar -->
@@ -235,6 +245,13 @@
 <style>
   .logo-size-min {
     min-width: 175px;
+  }
+  .nav-link {
+    font-weight: bold
+  }
+
+  .nav-logo {
+    background-color: black
   }
 </style>
 

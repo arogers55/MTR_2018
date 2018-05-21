@@ -1,0 +1,238 @@
+<div class="row">
+    <div class="col-xs-12 col-md-4 p-0 pr-md-3 ">
+        {%- assign collection = collections[section.settings.content_collection] -%}
+        {%- assign collection_image = section.settings.content_collection_image -%}
+        
+
+
+        <div id="collection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3  collection-image">
+            <meta itemprop="name" content="{{ collection.title }}">
+            <meta itemprop="url" content="{{ shop.url }}{{ collection.url }}">
+            <meta itemprop="image" content="{{ collection_image | img_url: '400x' }}">
+            <meta itemprop="description" content="{{ collection.description | strip_html | escape }}">
+
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
+                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                <meta itemprop="price" content="{{ collection.price | divided_by: 100.00 }}">
+                <div class="row justify-content-end">
+                    <div class="col-12 mb-3">
+                        <h1 class="display-5 text-right text-danger font-weight-bold">
+                            {{ section.settings.collection_title }}
+                        </h1>
+                        <h6 class="text-right text-light font-weight-bold">
+                            {{ section.settings.collection_description }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-xs-12 col-md-6  p-0 pr-md-3">
+                        <a class="btn btn-warning btn-lg w-100" href="{{ collection.url }}" role="button">Buy</a>
+                    </div>
+                </div>
+            </div>
+
+
+            {% unless collection == empty %}
+                <script type="application/json" data-collection-json>
+                {{ collection | json }}
+                </script>
+            {% endunless %}
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-4 p-0 pr-md-3">
+        {%- assign product = all_products[section.settings.content_product_1] -%}
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign product_1_image = section.settings.content_product_1_image -%}
+
+        {% if product == empty %}
+            {%- assign section_onboarding = true -%}
+            {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
+        {% endif %}
+            
+        <div id="product-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3">
+            <meta itemprop="name" content="{{ product.title }}">
+            <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+            <meta itemprop="image" content="{{ product_1_image | img_url: '400x' }}">
+            <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
+                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                <div class="row justify-content-end">
+                    <div class="col-12 mb-2">
+                    <h1 class="display-5 text-right text-danger font-weight-bold">
+                    {{ section.settings.product_1_title }}
+                    </h1>
+                    <h6 class="text-right text-light font-weight-bold">
+                    {{ section.settings.product_1_description }}
+                    </h6>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-xs-12 col-md-6  p-0 pr-md-3">
+                        <a class="btn btn-warning btn-lg w-100" href="{{ product.url }}" role="button">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            {% unless product == empty %}
+                <script type="application/json" data-product-json>
+                {{ product | json }}
+                </script>
+            {% endunless %}
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-4 p-0">
+        {%- assign product2 = all_products[section.settings.content_product_2] -%}
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign product_2_image = section.settings.content_product_2_image -%}
+
+        {% if product == empty %}
+        {%- assign section_onboarding = true -%}
+        {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
+        {% endif %}
+            
+        <div id="product2-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3">
+            <meta itemprop="name" content="{{ product2.title }}">
+            <meta itemprop="url" content="{{ shop.url }}{{ product2.url }}">
+            <meta itemprop="image" content="{{ product_2_image | img_url: '400x' }}">
+            <meta itemprop="description" content="{{ product2.description | strip_html | escape }}">
+
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
+                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                <meta itemprop="price" content="{{ product2.price | divided_by: 100.00 }}">
+                <div class="row justify-content-end">
+                    <div class="col-12 mb-2">
+                    <h1 class="display-5 text-right text-danger font-weight-bold">
+                    {{ section.settings.product_2_title }}
+                    </h1>
+                    <h6 class="text-right text-light font-weight-bold">
+                    {{ section.settings.product_2_description }}
+                    </h6>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-xs-12 col-md-6 p-0">
+                        <a class="btn btn-warning btn-lg w-100" href="{{ product2.url }}" role="button">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            {% unless product2 == empty %}
+                <script type="application/json" data-product-json>
+                {{ product2 | json }}
+                </script>
+            {% endunless %}
+        </div>
+    </div>
+</div>
+
+<style>
+    #collection-{{ section.id }} {
+        height: 400px;
+        background-image: url("{{ collection_image | img_url: '400x' }}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    #product-{{ section.id }} {
+        height: 400px;
+        background-image: url("{{ product_1_image | img_url: '400x' }}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    #product2-{{ section.id }} {
+        height: 400px;
+        background-image: url("{{ product_2_image | img_url: '400x' }}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+{% schema %}
+  {
+    "name": "Content Row",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "content_collection",
+        "label": "Collection"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_collection_image",
+        "label": "Image for collection"
+      },
+      {
+        "type": "text",
+        "id": "collection_title",
+        "label": "Collection Title",
+        "default": "Collection Title"
+      },
+      {
+        "type": "textarea",
+        "id": "collection_description",
+        "label": "Collection Description",
+        "default": "Description of Collection here."
+      },
+      {
+        "type":      "checkbox",
+        "id":        "collection_dark_text",
+        "label":     "Dark Text",
+        "default":   false,
+        "info":      "Use dark text for description?"
+      },
+      {
+        "type": "product",
+        "id": "content_product_1",
+        "label": "Product 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_product_1_image",
+        "label": "Image for product 1"
+      },
+      {
+        "type": "text",
+        "id": "product_1_title",
+        "label": "Product 1 Title",
+        "default": "Product 1 Title"
+      },
+      {
+        "type": "textarea",
+        "id": "product_1_description",
+        "label": "Product 1 Description",
+        "default": "Description of Product 1 here."
+      },
+      {
+        "type": "product",
+        "id": "content_product_2",
+        "label": "Product 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_product_2_image",
+        "label": "Image for product 2"
+      },
+      {
+        "type": "text",
+        "id": "product_2_title",
+        "label": "Product 2 Title",
+        "default": "Product 2 Title"
+      },
+      {
+        "type": "textarea",
+        "id": "product_2_description",
+        "label": "Product 2 Description",
+        "default": "Description of Product 2 here."
+      }
+    ]
+  }
+
+{% endschema %}

@@ -1,86 +1,90 @@
-{%- comment -%}
-  This is a required section for the Shopify Theme Store.
-  It is available in the "Featured Collection" section in the theme editor.
+{%- assign collection = collections[section.settings.content_collection] -%}
+{%- assign collection_image = section.settings.content_collection_image -%}
+        
 
-  Theme Store required settings
-  - Collection
 
-  Theme Store optional settings
-  - Heading: title of the featured collection section
-{%- endcomment -%}
-<section class="featured-collection">
-  {% if section.settings.title != blank %}
-    <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
-  {% endif %}
+<section id="collection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3">
+    <meta itemprop="name" content="{{ collection.title }}">
+    <meta itemprop="url" content="{{ shop.url }}{{ collection.url }}">
+    <meta itemprop="image" content="{{ collection_image | img_url: '400x' }}">
+    <meta itemprop="description" content="{{ collection.description | strip_html | escape }}">
 
-  {%- assign collection = collections[section.settings.collection] -%}
-
-  {% for product in collection.products limit: 6 %}
-    <a href="{{ product.url | within: collection }}" class="featured-collection-item">
-      {% if product.featured_image != blank %}
-        <div class="featured-collection__image">
-          {% include 'responsive-image' with
-            image: product.featured_image,
-            max_width: 480,
-            max_height: 480
-          %}
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <meta itemprop="price" content="{{ collection.price | divided_by: 100.00 }}">
+        <div class="row justify-content-end  p-0 pr-md-3">
+            <div class="col-12 mb-3">
+                <h1 class="display-5 text-right text-danger font-weight-bold">
+                    {{ section.settings.collection_title }}
+                </h1>
+                <h5 class="text-right text-light font-weight-bold
+                {% if section.settings.use_dark_text == true %}
+                  text-dark
+                {% endif %}
+                ">
+                  {{ section.settings.collection_description | newline_to_br }}
+                </h5>
+            </div>
         </div>
-      {% endif %}
+        <div class="row justify-content-end">
+            <div class="col-xs-12 col-md-6  p-0 pr-md-3">
+                <a class="btn btn-warning btn-lg w-100" href="{{ collection.url }}" role="button">Check it out</a>
+            </div>
+        </div>
+    </div>
 
-      <p>{{ product.title | escape }}</p>
-      <span>
-        {% if product.compare_at_price > product.price %}
-          {% if product.price_varies %}
-            {%- assign sale_price = product.price | money -%}
-            {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
-          {% else %}
-            {{ 'products.product.on_sale' | t }}
-            {{ product.price | money }}
-          {% endif %}
-        {% else %}
-          {% if product.price_varies %}
-            {%- assign price = product.price | money -%}
-            {{ 'products.product.from_text_html' | t: price: price }}
-          {% else %}
-            {{ product.price | money }}
-          {% endif %}
-        {% endif %}
-      </span>
-    </a>
-  {% else %}
-    {% for i in (1..6) %}
-      <a href="#" class="featured-collection-item">
-        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-        {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
 
-        <p>{{ 'homepage.onboarding.product_title' | t }}</p>
-        <p>{{ 1999 | money }}</p>
-      </a>
-    {% endfor %}
-  {% endfor %}
+    {% unless collection == empty %}
+        <script type="application/json" data-collection-json>
+        {{ collection | json }}
+        </script>
+    {% endunless %}
 </section>
+
+<style>
+    #collection-{{ section.id }} {
+        height: 400px;
+        background-image: url("{{ collection_image | img_url: '400x' }}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
 
 {% schema %}
   {
-    "name": "Featured collection",
+    "name": "Featured Collection",
     "settings": [
       {
-        "type": "text",
-        "id": "title",
-        "label": "Heading",
-        "default": "Featured collection"
+        "type": "collection",
+        "id": "content_collection",
+        "label": "Collection"
       },
       {
-        "id": "collection",
-        "type": "collection",
-        "label": "Collection"
-      }
-    ],
-    "presets": [
+        "type": "image_picker",
+        "id": "content_collection_image",
+        "label": "Image for collection"
+      },
       {
-        "name": "Featured collection",
-        "category": "Collection"
+        "type": "text",
+        "id": "collection_title",
+        "label": "Collection Title",
+        "default": "Collection Title"
+      },
+      {
+        "type": "textarea",
+        "id": "collection_description",
+        "label": "Collection Description",
+        "default": "Description of Collection here."
+      },
+      {
+        "type":      "checkbox",
+        "id":        "use_dark_text",
+        "label":     "Dark Text",
+        "default":   false,
+        "info":      "Use dark text for description?"
       }
     ]
   }
+
 {% endschema %}
