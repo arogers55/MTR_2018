@@ -1,0 +1,99 @@
+{%- assign product = all_products[section.settings.product] -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_product_image = section.settings.featured_product_image -%}
+
+{% if product == empty %}
+  {%- assign section_onboarding = true -%}
+  {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
+{% endif %}
+	
+<section id="featured-product-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" itemscope itemtype="http://schema.org/Product" class="jumbotron jumbotron-fluid p-0 mb-3">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ featured_product_image | img_url: '400x' }}">
+  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+  <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
+    <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+    <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+  	<div class="row justify-content-end p-0 pr-md-3">
+  		<div class="col-12 mb-2">
+        <h1 class="display-5 text-right text-danger font-weight-bold">
+          {{ section.settings.product_title }}
+        </h1>
+        <h5 class="text-right text-light font-weight-bold
+                {% if section.settings.use_dark_text == true %}
+                  text-dark
+                {% endif %}
+                ">
+          {{ section.settings.product_description | newline_to_br }}
+        </h5>
+  		</div>
+	</div>
+	<div class="row justify-content-end">
+		<div class="col-xs-12 col-md-6  p-0 pr-md-3">
+			<a class="btn btn-warning btn-lg w-100" href="{{ product.url }}" role="button">Check it out</a>
+		</div>
+	</div>
+  </div>
+
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {{ product | json }}
+    </script>
+  {% endunless %}
+</section>
+
+<style>
+
+	#featured-product-{{ section.id }} {
+		height: 400px;
+		background-image: url("{{ featured_product_image | img_url: '400x' }}");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+	}
+
+	.content-positioning {
+		bottom: 16px;
+	}
+
+</style>
+
+{% schema %}
+  {
+    "name": "Featured Product 4",
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Product"
+      },
+      {
+        "type": "text",
+        "id": "product_title",
+        "label": "Product Title",
+        "default": "Product Title"
+      },
+      {
+        "type": "textarea",
+        "id": "product_description",
+        "label": "Product Description",
+        "default": "Description of Product here."
+      },
+      {
+        "type": "image_picker",
+        "id": "featured_product_image",
+        "label": "Featured image"
+      },
+      {
+        "type":      "checkbox",
+        "id":        "use_dark_text",
+        "label":     "Dark Text",
+        "default":   false,
+        "info":      "Use dark text for description?"
+      }
+    ]
+  }
+{% endschema %}
