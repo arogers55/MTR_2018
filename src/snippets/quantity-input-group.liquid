@@ -1,0 +1,29 @@
+<div class="row p-0 pb-3">
+    <div class="col-6 offset-6 col-md-8 offset-md-4 p-0">
+        <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="SingleOptionSelector-{{ forloop.index0 }}">
+                <strong class="d-inline-block text-truncate mw-45px">Qty: </strong>
+            </label>
+        </div>
+        <input id="Quantity" type="number" name="quantity" class="form-control text-center" min="1" placeholder="Quantity" value="1" aria-label="Item quantity" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-dark btn-sm" type="button" onclick='decrementQuantity()'>-</button>
+            <button class="btn btn-outline-dark btn-sm" type="button" onclick='incrementQuantity()'>+</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function incrementQuantity() {
+        var quantityInput = $('#Quantity');
+        quantityInput.val(Number(quantityInput.val()) + 1);
+    }
+    function decrementQuantity() {
+        var quantityInput = $('#Quantity');
+        if(quantityInput.val() > 0) {
+            quantityInput.val(quantityInput.val() - 1);
+        }
+    }
+</script>

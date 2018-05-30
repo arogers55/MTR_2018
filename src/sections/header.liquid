@@ -7,7 +7,7 @@
       {% comment %} Main site Logo {% endcomment %}
         <div class="h-100 col-auto p-0">
             {% if template.name == 'index' %}
-              <h2 itemscope itemtype="http://schema.org/Organization">
+              <h2 itemscope itemtype="http://schema.org/Organization" class="mb-0">
             {% else %}
               <div class="h1" itemscope itemtype="http://schema.org/Organization">
             {% endif %}
@@ -17,7 +17,8 @@
                     <img src="{{ section.settings.logo | img_url: image_size }}"
                          srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
                          alt="{{ section.settings.logo.alt | default: shop.name }}"
-                         itemprop="logo">
+                         itemprop="logo"
+                         class="img-fluid">
                   {% else %}
                     {{ shop.name }}
                   {% endif %}
@@ -58,14 +59,17 @@
               <ul class="nav justify-content-end">
                 <li class="nav-item">
                   <a class="nav-link text-dark small" href="/cart">
-                    <i class="fas fa-shopping-cart fa-sm"></i>
+                    <i class="fas fa-shopping-cart fa-sm
+                    {% if cart.item_count > 0 %}
+                      text-danger
+                    {% endif %}"></i>
                   </a>
                 </li>
                 <li class="nav-item ">
                   <a class="nav-link text-dark small" href="#">Chat</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-dark small" href="#">Account / Login</a>
+                  <a class="nav-link text-dark small" href="/login">Account / Login</a>
                 </li>
               </ul>
             </div>
@@ -87,7 +91,7 @@
             </div>
 
             <!-- search bar -->
-            <div class="col-xs-12 col-md-3 align-self-center pl-0 pr-0 pb-3 pb-md-0">
+            <div class="col-xs-12 col-md-3 align-self-center pl-0 pr-0">
               {%include "search-bar"%}
             </div>
           </div>

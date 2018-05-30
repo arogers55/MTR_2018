@@ -13,29 +13,31 @@
   <meta itemprop="image" content="{{ featured_product_image | img_url: '400x' }}">
   <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
+<a class="d-block w-100 h-100" href="{{ product.url }}" >
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute content-positioning">
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">
     <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
   	<div class="row justify-content-end">
   		<div class="col-12 mb-2">
-        <h1 class="display-5 text-right text-danger font-weight-bold">
+        <h3 class="display-5 text-right text-danger font-weight-bold">
           {{ section.settings.product_title }}
-        </h1>
-        <h5 class="text-right text-light font-weight-bold
+        </h3>
+        <p class="text-right text-light font-weight-bold
                 {% if section.settings.use_dark_text == true %}
                   text-dark
                 {% endif %}
                 ">
           {{ section.settings.product_description | newline_to_br }}
-        </h5>
+        </p>
   		</div>
-	</div>
-	<div class="row justify-content-end">
-		<div class="col-xs-12 col-md-6 p-0">
-			<a class="btn btn-warning btn-lg w-100" href="{{ product.url }}" role="button">Check it out</a>
-		</div>
-	</div>
+	  </div>
+    <div class="row justify-content-end">
+      <div class="col-xs-12 col-md-8 p-0">
+        <button class="btn btn-warning btn-lg w-100" role="button">Check it out</button>
+      </div>
+    </div>
   </div>
+</a>
 
 
   {% unless product == empty %}

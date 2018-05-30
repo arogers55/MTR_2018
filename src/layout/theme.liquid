@@ -91,6 +91,14 @@
     .row {
       margin: 0 0 0 0;
     }
+    
+
+    {% comment %} Disable spinners on input for WebKit Browsers {% endcomment %}
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
   </style>
 
   <!-- Bootstrap JS -->
