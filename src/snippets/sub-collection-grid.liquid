@@ -1,0 +1,64 @@
+{% comment %} 
+    creates a grid of sub collections related to the given collection,
+    if there are any. Requires the collection hierarchy to be correctly
+    set up in the Shopify admin navigation page.
+
+    Accepts:
+     - collection: {Object} Collection object
+
+    Usage:
+    In collection template add following line
+    {% include sub-collection-grid with collection: collection %}
+{% endcomment %}
+
+{% if linklists[collection.handle].links[0] != nil %}
+    <div class="row">
+    <div class="col">
+        <header class="section-header">
+            <h4 class="font-weight-bold m-0 pt-3 pb-3">Sub-Categories</h4>
+        </header>
+    </div>
+    </div>
+{% endif %}
+
+<div id="subcollections" class="row mb-4">
+    {% for link in linklists[collection.handle].links %}
+        {% assign sub_collection = link.object %}
+        <a href="{{ link.url }}" class="col-4 subcollection p-1">
+            <div id="subcollection-{{ forloop.index }}" class="row justify-content-end w-100 h-100">
+                <div class="col-xs-12 col-md-8 p-2 pb-3 position-absolute subcollection-header-container w-100 mw-100">
+                    <p class="m-0 display-4 text-right text-danger font-weight-bold subcollection-header">
+                        {{ sub_collection.title }}
+                    </p>
+                </div>
+            </div>
+        </a>
+        <style>
+            .subcollection-header-container {
+                bottom: 0px;
+            }
+
+            .subcollection-header {
+                font-size: 1rem;
+            }
+            .subcollection {
+                height: 150px;
+            }
+            #subcollection-{{forloop.index}} {
+                background-image: url("{{ sub_collection.image | img_url: '400x' }}");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
+            /* desktop size adjustments */
+            @media screen and (min-width: 768px) {
+                .subcollection {
+                height: 300px;
+                }
+                .subcollection-header {
+                font-size: 1.8rem;
+                }
+            }
+        </style>
+    {% endfor %}
+</div>

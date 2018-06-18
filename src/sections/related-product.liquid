@@ -6,7 +6,7 @@
   and number of rows.
 {% endcomment %}
 
-{% assign number_of_related_products_per_row = section.settings.related_grid_num %}
+{% assign number_of_related_products = 4 %}
 {% assign number_of_rows = section.settings.related_grid_row %}
 
 {% comment %}
@@ -65,27 +65,71 @@
 
 
   {% capture related_items %}
-    <div class="row d-none d-md-block">
-      <div class="col">
-        <div class="card-deck">
+    <div class="row d-none d-md-flex">
           {% for product in collection.products %}
-          {% unless product.handle == current_product.handle %}
-              {% unless same_vendor and current_product.vendor != product.vendor %}
-              {% unless same_type and current_product.type != product.type %}
-                <a class="card bg-light text-center text-dark related-img-height" href="{{ product.url }}">
-                  <div class="card-body row align-item-center pl-0 pr-0">
-                    <div class="col align-self-center pl-0 pr-0">
-                      <img src="{{ product | img_url: '400x'}}" id="product-{{ forloop.index }}" class="w-100">
-                      </img>
+            {% if forloop.index > number_of_related_products %}
+              {% break %}
+            {% else %}
+            <div class="col-3 p-0 pt-2 pb-2">
+              <a href="{{ product.url }}">
+                <div class="container">
+                  <div class="row">
+                    {% if product.featured_image != blank %}
+                        {% comment %} {% include 'responsive-image' with
+                          image: product.featured_image,
+                          max_width: 300,
+                          max_height: 300,
+                          img_class: 'card-img-top'
+                        %} {% endcomment %}
+                        <div class="col-12 p-0">
+                          <div id="related-product-image-{{ forloop.index }}"></div>
+                        </div>
+                        <style>
+                          #related-product-image-{{forloop.index}} {
+                              height: 200px;
+                              background-image: url("{{ product.featured_image | img_url: '400x' }}");
+                              background-repeat: no-repeat;
+                              background-position: center;
+                              background-size: contain;
+                          }
+                        </style>
+                    {% endif %}
+                    <div class="col-12 text-dark p-0 pt-3 text-center">
+                      <h6 class="card-title text-truncate m-0 font-weight-bold">{{ product.title }}</h6>
+                    </div>
+                    <div class="col-12 text-dark p-0 pt-2 text-center ">
+                      {% if product.compare_at_price > product.price %}
+
+                        {% if product.price_varies %}
+                          {%- assign sale_price = product.price | money -%}
+                          {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                        {% else %}
+                          {{ 'products.product.on_sale' | t }}
+                          {{ product.price | money }}
+                        {% endif %}
+
+                      {% else %}
+
+                        {% if product.price_varies %}
+                          {%- assign price = product.price | money -%}
+                          {{ 'products.product.from_text_html' | t: price: price }}
+                        {% else %}
+                          {{ product.price | money }}
+                        {% endif %}
+
+                      {% endif %}
+                    </div>
+                    <div class="col-12 p-0 pt-3">
+                      <button type="button" class="btn btn-warning btn btn-block font-weight-bold" style="border-radius: 0px;">
+                        More Info
+                      </button>
                     </div>
                   </div>
-                </a>
-              {% endunless %}
-              {% endunless %}
-          {% endunless %}
+                </div>
+              </a>
+            </div>
+            {% endif %}
           {% endfor %}
-        </div>
-      </div>
     </div>
   {% endcapture %}
 
@@ -102,11 +146,49 @@
                       {% if forloop.index == 1 %}
                         active
                       {% endif %}" href="{{ product.url }}">
-                      <div class="row img-thumbnail text-center text-dark related-img-height p-0 align-item-center">
-                        <div class="col p-0 align-self-center">
-                          <img src="{{ product | img_url: '400x'}}" id="product-{{ forloop.index }}" class="w-100">
-                          </img>
+                      <div class="row pl-5 pr-5">
+                        <div class="col-12">
+                          <div id="related-image-{{ forloop.index }}" class="d-block"></div>
                         </div>
+                        <div class="col-12 pt-3">
+                          <h6 class="card-title text-truncate m-0 font-weight-bold text-dark text-center ">{{ product.title }}</h6>
+                        </div>
+                        <div class="col-12 p-0 pt-2 text-center">
+                          {% if product.compare_at_price > product.price %}
+                            <span class="text-danger">
+                              {% if product.price_varies %}
+                                {%- assign sale_price = product.price | money -%}
+                                {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                              {% else %}
+                                {{ 'products.product.on_sale' | t }}
+                                {{ product.price | money }}
+                              {% endif %}
+                            </span>
+                          {% else %}
+                            <span class="text-dark text-center">
+                              {% if product.price_varies %}
+                                {%- assign price = product.price | money -%}
+                                {{ 'products.product.from_text_html' | t: price: price }}
+                              {% else %}
+                                {{ product.price | money }}
+                              {% endif %}
+                            </span>
+                          {% endif %}
+                        </div>
+                        <div class="col-12 p-0 pt-3">
+                          <button type="button" class="btn btn-warning btn btn-block font-weight-bold" style="border-radius: 0px;">
+                            More Info
+                          </button>
+                        </div>
+                        <style>
+                          #related-image-{{forloop.index}} {
+                              height: 200px;
+                              background-image: url("{{ product | img_url: '400x' }}");
+                              background-repeat: no-repeat;
+                              background-position: center;
+                              background-size: contain;
+                          }
+                        </style>
                       </div>
                     </a>
                     {% endunless %}
@@ -131,10 +213,10 @@
 
   {% unless related_items == blank %}
 
-    <div class="row  mr-3 ml-3 pb-4">
+    <div class="row pb-4">
         <div class="col p-0">
             <div class="row">
-                <div class="col p-0">
+                <div class="col">
                     {% unless heading == blank %}
                         <header class="section-header">
                             <h4 class="font-weight-bold m-0 pt-3 pb-3">{{ heading }}</h4>
@@ -159,7 +241,7 @@
 {% endif %}
 
 <style>
-  .related-img-height {
+  .related-product-item {
     height: 300px;
   }
 </style>

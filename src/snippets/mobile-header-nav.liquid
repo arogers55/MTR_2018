@@ -1,0 +1,109 @@
+
+<!-- mobile header navigation -->
+<div class="d-block d-md-none col-xs-12 col-md-9 p-0">
+    <nav class="navbar navbar-expand-md navbar-light p-0">
+    <div class="collapse navbar-collapse" id="navbarMobileNav">
+        <ul class="navbar-nav">
+        {% for link in linklists.main-menu.links %}
+            {% assign topLevelIndex = forloop.index %}
+            {% if link.levels == 0 %}
+            <li class="nav-item pl-3">
+                <a href="{{ link.url }}" class="nav-link pb-0 text-dark">{{ link.title }}</a>
+            </li>
+            {% else%}
+            <li class="nav-item">
+                <div class="nav-link mobile-custom-dropdown">
+                <a class="text-dark pl-3">{{linklists[link.title].title}}</a>
+                <div class="accordion bg-grey border mobile-dropdown-content border-dark" id="mobile-accordion-{{ topLevelIndex }}">
+                    {% for child_link in linklists[link.title].links %}
+                    {% if child_link.levels == 0 %}
+                        <div class="p-0" id="mobile-heading-{{ topLevelIndex }}-{{forloop.index}}">
+                            <a class="row p-1 justify-content-between" href="{{ child_link.url }}" role="button" data-toggle="collapse" data-target="#mobile-collapse-{{ topLevelIndex }}-{{forloop.index}}" aria-expanded="false" aria-controls="mobile-collapse-{{ topLevelIndex }}-{{ forloop.index }}">
+                            <div class="col-auto p-0">
+                                <span class="collapsed w-100 font-weight-normal text-left pl-3">
+                                    {{ child_link.title }}
+                                </span>
+                            </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div>
+                            <div class="p-0" id="mobile-heading-{{ topLevelIndex }}-{{forloop.index}}">
+                                <a class="row p-1 justify-content-between" href="{{ child_link.url }}" role="button" data-toggle="collapse" data-target="#mobile-collapse-{{ topLevelIndex }}-{{forloop.index}}" aria-expanded="false" aria-controls="mobile-collapse-{{ topLevelIndex }}-{{ forloop.index }}">
+                                <div class="col-auto p-0">
+                                    <span class="collapsed w-100 font-weight-normal text-left pl-3">
+                                        {{ child_link.title }}
+                                    </span>
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <i class="fas fa-caret-down"></i>
+                                </div>
+                                </a>
+                            </div>
+
+                            <div id="mobile-collapse-{{ topLevelIndex }}-{{ forloop.index }}" class="collapse" aria-labelledby="mobile-heading-{{ topLevelIndex }}-{{ forloop.index }}" data-parent="#mobile-accordion-{{ topLevelIndex }}">
+                                <div class=" border-top border-bottom bg-black border-dark">
+                                {% for second_level_link in child_link.links %}
+                                    <a class="row p-1" href="{{ second_level_link.url }}">
+                                    <div class="col w-100 p-0 align-items-center">
+                                        <span class="font-weight-normal text-left align-middle pl-3 text-truncate d-inline-block w-100 h-100 ">
+                                        {{ second_level_link.title }}
+                                        </span>
+                                    </div>
+                                    </a>                                        
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+    </nav>
+</div>
+
+
+<style>
+  .logo-size-min {
+    min-width: 175px;
+  }
+  .nav-link {
+    font-weight: bold
+  }
+
+  /* Dropdown container - needed to position the dropdown content */
+  .mobile-custom-dropdown {
+      overflow: hidden;
+  }
+
+  /* Style the dropdown content (hidden by default) */
+  .mobile-dropdown-content {
+      display: none;
+      z-index: 100;
+  }
+
+  .mobile-custom-dropdown .btn-link {
+    color: black;
+    text-decoration: none;
+  }
+
+  .mobile-custom-dropdown .row {
+    text-decoration: none;
+    color: #f8f9fa;
+  }
+
+  .mobile-custom-dropdown .row:hover {
+    background-color: #ffc107;
+    color: black;
+  }
+
+  /* Show the dropdown menu when the user moves the mouse over the dropdown button */
+  .mobile-custom-dropdown:hover .mobile-dropdown-content {
+    display: block;
+  }
+</style>

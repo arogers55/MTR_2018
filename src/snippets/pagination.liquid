@@ -1,3 +1,30 @@
-<div class="pagination">
-  {{ paginate | default_pagination }}
-</div>
+<nav>
+  <ul class="pagination pt-3">
+    <li class="page-item
+      {% if paginate.previous.is_link != true %} disabled {% endif %}">
+      <a class="page-link text-dark {% if paginate.previous.is_link != true %} text-muted {% endif %}"
+        href="{{ paginate.previous.url }}#collection-container">Previous</a>
+    </li>
+      {% comment %} <li class="page-item active text-white"><a class="page-link">1</a></li> {% endcomment %}
+      {% for part in paginate.parts %}
+        <li class="page-item
+          {% if part.title == paginate.current_page %}
+            active bg-warning
+          {% elsif part.is_link != true %}
+            disabled
+          {% endif %}">
+          <a class="page-link text-dark
+          {% if part.title == paginate.current_page %}
+            active bg-warning border-warning text-dark
+          {% elsif part.is_link != true %}
+            text-muted
+          {% endif %}" href="{{ part.url }}#collection-container">{{ part.title }}</a>
+        </li>
+      {% endfor %}
+    <li class="page-item
+      {% if paginate.next.is_link != true %} disabled {% endif %}">
+      <a class="page-link text-dark {% if paginate.next.is_link != true %} text-muted {% endif %}"
+        href="{{ paginate.next.url }}#collection-container">Next</a>
+    </li>
+  </ul>
+</nav>

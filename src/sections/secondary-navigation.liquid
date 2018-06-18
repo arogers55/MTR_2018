@@ -1,17 +1,18 @@
+{% assign secondary_links = linklists.secondary-navigation %}
 <section class="row">
 	<div class="col text-right p-0 pb-3">
 		<div class="row mb-5">
 			<div class="col p-0">
 				<ul class="nav flex-column">
 				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	Sale Items
+				    <a class="nav-link text-dark" href="{{ secondary_links.links[0].url }}">
+				    	{{ secondary_links.links[0].title }}
 	    			  <i class="fas fa-tags text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	MTR Collection
+				    <a class="nav-link text-dark" href="{{ secondary_links.links[1].url }}">
+				    	{{ secondary_links.links[1].title }}
 	    			  {% if section.settings.mtr-collection-logo != blank %}
 	                    {% capture image_size %}{{ section.settings.mtr-collection-logo_max_width }}x{% endcapture %}
 	                    <img src="{{ section.settings.mtr-collection-logo | img_url: image_size }}"
@@ -27,55 +28,60 @@
 				    </a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link text-dark text-truncate" href="#">
-				    	Active Shooter / Mass Casualty
+				    <a class="nav-link text-dark text-truncate" href="{{ secondary_links.links[2].url }}">
+				    	{{ secondary_links.links[2].title }}
 	    			  <i class="fas fa-shield-alt text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	Batteries
+				    <a class="nav-link text-dark" href="{{ secondary_links.links[3].url }}">
+				    	{{ secondary_links.links[3].title }}
 	    			  <i class="fas fa-battery-full text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	Wildland Firefighting
+				    <a class="nav-link text-dark" href="{{ secondary_links.links[4].url }}">
+				    	{{ secondary_links.links[4].title }}
 	    			  <i class="fas fa-fire text-danger"></i>
 				    </a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				      AEDs and Defibrillators
+				    <a class="nav-link text-dark" href="{{ secondary_links.links[5].url }}">
+				    	{{ secondary_links.links[5].title }}
 	    			  <i class="fas fa-heartbeat text-danger"></i>
 					</a>
 				  </li>
 				</ul>
 			</div>
 		</div>
-		<div class="row mt-4">
-			<div class="col">
-				<h4 class="text-right pr-3"><strong>Articles</strong></h4>
+		{% assign blog = blogs.News %}
+		{% if blog.articles_count != 0 %}
+			<div class="row mt-4">
+				<div class="col">
+					<h4 class="text-right"><strong>Articles</strong></h4>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col">
-				<ul class="nav flex-column">
-				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	Article title name 1
-	    			  <i class="fas fa-pencil-alt text-warning"></i>
-				    </a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link text-dark" href="#">
-				    	Article title name 2
-							<i class="fas fa-pencil-alt text-warning"></i>
-				    </a>
-				  </li>
-				</ul>
+			<div class="row">
+				<div class="col p-0">
+					<ul class="nav flex-column">
+					{% assign articleOneIndex = blog.articles_count | minus:1 %}
+					{% assign articleTwoIndex = blog.articles_count | minus:2 %}
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="{{ blog.articles[articleOneIndex].url }}">
+								{{ blog.articles[articleOneIndex].title }}
+								<i class="fas fa-pencil-alt text-warning"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="{{ blog.articles[articleTwoIndex].url }}">
+								{{ blog.articles[articleTwoIndex].title }}
+								<i class="fas fa-pencil-alt text-warning"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
-		</div>
+		{% endif %}
 	</div>
 </section>
 

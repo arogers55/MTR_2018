@@ -14,6 +14,7 @@
       <h3 class="font-weight-bold">{{ product.title }}</h3>
     </div>
   </div>
+  
 {% comment %} Mobile Product SKU {% endcomment %}
   <div class="row d-md-none">
     <div class="col">
@@ -22,14 +23,19 @@
   </div>
 
   {% comment %} Main Content Row {% endcomment %}
-  <div class="row pb-4 border-bottom border-grey">
+  <div class="row pb-4 ">
+
     {% comment %} Main Column 1 {% endcomment %}
     <div class="col-xs-12 col-md-6 p-0">
+
       {% comment %} Product Image Carousel {% endcomment %}
       <div class="row pb-3">
         <div class="col">
           <div id="carouselExampleIndicators" class="carousel slide">
             <div class="carousel-inner carousel-height bg-light border">
+
+            {% comment %} for each image of a product, if it's not a More Info Image,
+              add it to the image carousel. {% endcomment %}
               {% for image in product.images %}
                 {% if image.alt contains 'isMoreInfo' %}
                 {% else %}
@@ -37,17 +43,41 @@
                       {% if forloop.index == 1 %}
                         active
                       {% endif %}">
+
+                    {% comment %} if the image represents a youtube video,
+                      embed the youtube video into the image carousel. {% endcomment %}
                     {% if image.alt contains 'youtube' %}
-                      <div class="row h-100 w-100 align-items-center justify-content-center">
+                      {% comment %} <div class="row h-100 w-100 align-items-center justify-content-center">
                         <div class="col">
                           <div class="embed-responsive embed-responsive-16by9">
                             <iframe class="embed-responsive-item" src={{ image.alt }} allowfullscreen></iframe>
                           </div>
                         </div>
-                      </div>
-                    {% else %}
-                      <a id="image-{{ forloop.index }}" class="d-block w-100 h-100" href="{{ image.src | img_url: '1200x' }}" data-product-single-thumbnail>
+                      </div> {% endcomment %}
+                      <a id="image-{{ forloop.index }}" class="d-block w-100 h-100"  href="{{ image.alt }}" data-featherlight="iframe" data-featherlight-iframe-width="640" data-featherlight-iframe-height="480" data-featherlight-iframe-frameborder="0" data-featherlight-iframe-allow="autoplay; encrypted-media" data-featherlight-iframe-allowfullscreen="true">
+                        <div class="row h-100 w-100 justify-content-center align-items-center">
+                          <div class="col-auto p-0">
+                            <i class="fas fa-play-circle text-light fa-4x"></i>
+                          </div>
+                        </div>
                       </a>
+                      <style>
+                        #image-{{forloop.index}} {
+                            height: 400px;
+                            background-image: url("{{ image.src | img_url: '400x' }}");
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-size: contain;
+                        }
+                      </style>
+                    {% else %}
+                      <a id="image-{{ forloop.index }}" class="d-block w-100 h-100" href="#" data-product-single-thumbnail data-featherlight="#product-image-lightbox-{{forloop.index}}">
+                      </a>
+                      <div class="d-none">
+                        <div id="product-image-lightbox-{{forloop.index}}">
+                          {{ image | img_tag: image.alt, 'img-fluid', '1024x' }}
+                        </div>
+                      </div>
                       <style>
                         #image-{{forloop.index}} {
                             height: 400px;
@@ -73,8 +103,12 @@
           </div>
         </div>
       </div>
+
       {% comment %} Image Carousel Thumbnails {% endcomment %}
       <div class="row pb-3">
+
+      {% comment %} for each image in a product, if it isn't a More Info Image,
+        add it as a navigation indicator for the main image carousel. {% endcomment %}
         {% for image in product.images %}
           {% if image.alt contains 'isMoreInfo' %}
           {% else %}
@@ -84,6 +118,8 @@
                     active
                   {% endif %}">
 
+                  {% comment %} if the image represents a youtube video, add a
+                    'play' icon on top of image thumbnail. {% endcomment %}
                   {% if image.alt contains 'youtube' %}
                     <div class="h-100 w-100">
                     <div class="row h-100 w-100 align-items-center justify-content-center">
@@ -109,12 +145,6 @@
           {% endif %}
         {% endfor %}
       </div>
-      {% comment %} Product Social Links {% endcomment %}
-      {% comment %} <div class="row ml-3 mr-3 pt-4 pb-4 justify-content-end">
-        <div class="col-auto">
-          {% include 'social-sharing' %}
-        </div>
-      </div> {% endcomment %}
     </div>
 
     {% comment %} Main Column 2 {% endcomment %}
@@ -146,6 +176,7 @@
                     <h6 class="font-weight-bold">SKU: {{ current_variant.sku }}</h6>
                   </div>
                 </div>
+
                 {% comment %} Product variant selection groups {% endcomment %}
                 <div class="row">
                   <div class="col p-0">
@@ -187,25 +218,35 @@
                 {% include 'quantity-input-group' %}
               </div>
               <div class="col-xs-12 col-md-5 offset-md-1 p-0">
+
                 {% comment %} Product Price {% endcomment %}
-                <div class="row">
-                  <div class="col">
+                <div class="row pb-2">
+                  <div class="col p-0">
                     <div data-price-wrapper>
-                      <h2 data-product-price class="font-weight-bold text-center">
+                      <h2 data-product-price class="font-weight-bold text-center m-0">
                         {{ current_variant.price | money }}
                       </h2>
 
                       {% if product.compare_at_price_max > product.price %}
-                        <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
-                        <s data-compare-price>
-                          {% if current_variant.compare_at_price > current_variant.price %}
-                            {{ current_variant.compare_at_price | money }}
-                          {% endif %}
-                        </s>
+                      <div class="row justify-content-center">
+                        <div class="col-auto p-0 pr-1">
+                          <small class="text-secondary" data-compare-text>{{ 'products.product.regular_price' | t }}</small>
+                        </div>
+                        <div class="col-auto p-0">
+                          <small class="text-secondary">
+                            <s data-compare-price>
+                              {% if current_variant.compare_at_price > current_variant.price %}
+                                {{ current_variant.compare_at_price | money }}
+                              {% endif %}
+                            </s>
+                          </small>
+                        </div>
+                      </div>
                       {% endif %}
                     </div>
                   </div>
                 </div>
+
                 {% comment %} Add to Cart Button {% endcomment %}
                 <div class"row">
                   <div class="col p-0">
@@ -247,7 +288,8 @@
   </div>
 
   {% comment %} Product More Info Row {% endcomment %}
-  <div class="row">
+  {% assign isMoreInfoHidden = true %}
+  <div class="row more-info-hidden border-top border-grey">
     <div class="col">
       <div class="row">
         <div class="col">
@@ -259,37 +301,61 @@
       <div class="row justify-content-center">
           {% for image in product.images %}
             {% if image.alt contains 'isMoreInfo' %}
-              <div class="col-xs-12 col-md-4 p-0 pb-3 p-md-3">
-                <div id="more-info-{{ forloop.index }}" data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.index | minus: 1 }}" class="img-thumbnail
+              {% if isMoreInfoHidden == true %}
+                {% assign isMoreInfoHidden = false %}
+              {% endif %}
+              <a class="col-xs-12 col-md-4 p-0 pb-3 p-md-3" data-featherlight="#more-info-lightbox-{{forloop.index}}">
+                <div href="#" id="more-info-{{ forloop.index }}" class="img-thumbnail
                     {% if forloop.index == 1 %}
                       active
                     {% endif %}">
                 </div>
+              </a>
+              <style>
+                  #more-info-{{forloop.index}} {
+                      background-image: url("{{ image.src | img_url: '400x' }}");
+                      background-repeat: no-repeat;
+                      background-position: center;
+                      background-size: contain;
+                      margin: 0px;
+                      height: 300px;
+                  }
+              </style>
+              <div class="d-none">
+                <div id="more-info-lightbox-{{forloop.index}}">
+                  {{ image | img_tag: image.alt, '', '1024x' }}
+                </div>
               </div>
             {% endif %}
-
-
-            <style>
-                #more-info-{{forloop.index}} {
-                    background-image: url("{{ image.src | img_url: '400x' }}");
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: contain;
-                    margin: 0px;
-                    height: 300px;
-                }
-            </style>
           {% endfor %}
       </div>
     </div>
   </div>
 
+  {% if isMoreInfoHidden == true %}
+    <style>
+      .more-info-hidden {
+        display: none;
+      }
+    </style>
+  {% endif %}
+
 
   {% comment %} Product Reviews Row {% endcomment %}
-  <div class="row">
+  <div class="row border-top border-grey">
     <div class="col">
-      <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
-    </div>
+      <div class="row">
+        <div class="col">
+          <header class="section-header">
+              <h4 class="font-weight-bold m-0 pt-3 pb-3">Reviews</h4>
+          </header>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="yotpo yotpo-main-widget" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" data-description="{{ product.description | escape }}"></div>
+        </div>
+      </div>
   </div>
 
   {% unless product == empty %}
@@ -298,131 +364,6 @@
     </script>
   {% endunless %}
 </section>
-
-{% comment %} <div data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
-
-  {%- assign current_variant = product.selected_or_first_available_variant -%}
-  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
-
-  <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
-  <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
-  <meta itemprop="brand" content="{{ product.vendor }}">
-  <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
-  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
-
-  {% if featured_image != blank %}
-    {% include 'responsive-image' with
-      image: featured_image,
-      max_width: 700,
-      max_height: 800
-    %}
-  {% endif %}
-
-  {% if product.images.size > 1 %}
-    <ul>
-      {% for image in product.images %}
-        <li>
-          <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>
-            <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.vendor }}</p>
-
-  <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <meta itemprop="priceCurrency" content="{{ shop.currency }}">
-    <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
-    <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
-
-    <form action="/cart/add" method="post" enctype="multipart/form-data">
-      {% unless product.has_only_default_variant %}
-        {% for option in product.options_with_values %}
-          <div class="selector-wrapper js">
-            <label for="SingleOptionSelector-{{ forloop.index0 }}">
-              {{ option.name }}
-            </label>
-
-            <select
-              id="SingleOptionSelector-{{ forloop.index0 }}"
-              data-single-option-selector
-              data-index="option{{ option.position }}">
-              {% for value in option.values %}
-                <option
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}selected="selected"{% endif %}>
-                    {{ value }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-        {% endfor %}
-      {% endunless %}
-
-      <select name="id" class="no-js" data-product-select>
-        {% for variant in product.variants %}
-          <option
-            {% if variant == current_variant %}selected="selected"{% endif %}
-            {% unless variant.available %}disabled="disabled"{% endunless %}
-            value="{{ variant.id }}">
-              {{ variant.title }}
-          </option>
-        {% endfor %}
-      </select>
-
-      <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
-      <input type="number" id="Quantity" name="quantity" value="1" min="1">
-
-      <div data-price-wrapper>
-        <span data-product-price>
-          {{ current_variant.price | money }}
-        </span>
-
-        {% if product.compare_at_price_max > product.price %}
-          <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
-          <s data-compare-price>
-            {% if current_variant.compare_at_price > current_variant.price %}
-              {{ current_variant.compare_at_price | money }}
-            {% endif %}
-          </s>
-        {% endif %}
-      </div>
-
-      <button
-        type="submit"
-        name="add"
-        data-add-to-cart
-        {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-          <span data-add-to-cart-text>
-            {% if current_variant.available %}
-              {{ 'products.product.add_to_cart' | t }}
-            {% else %}
-              {{ 'products.product.sold_out' | t }}
-            {% endif %}
-          </span>
-      </button>
-    </form>
-
-  </div>
-
-  <div class="rte">
-    {{ product.description }}
-  </div>
-
-  {% if section.settings.show_share_buttons %}
-    {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
-  {% endif %}
-
-  {% unless product == empty %}
-    <script type="application/json" data-product-json>
-      {{ product | json }}
-    </script>
-  {% endunless %}
-</div> {% endcomment %}
-
 
 <style>
   .carousel-height {

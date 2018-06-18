@@ -13,6 +13,7 @@
   <meta itemprop="image" content="{{ featured_image | img_url: '1920x' }}">
   <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
 
+<a class="d-block h-100 w-100" href="{{ product.url }}">
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="container p-0 m-0 mw-100 position-absolute featured-jumbo-container">
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">
     <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
@@ -30,14 +31,14 @@
           {{ section.settings.product_description | newline_to_br }}
         </p>
   		</div>
-	</div>
+	  </div>
 	<div class="row justify-content-end">
 		<div class="col-xs-12 col-md-4 p-0">
-			<a class="btn btn-warning btn-lg w-100" href="{{ product.url }}" role="button">Check it out</a>
+			<button class="btn btn-warning btn-lg w-100" style="border-radius:0px;">Check it out</button>
 		</div>
 	</div>
   </div>
-
+</a>
 
   {% unless product == empty %}
     <script type="application/json" data-product-json>

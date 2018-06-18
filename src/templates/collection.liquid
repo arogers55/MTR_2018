@@ -1,102 +1,171 @@
 {% paginate collection.products by 12 %}
-  <header role="banner">
-    <h1>{{ collection.title }}</h1>
-    {% if collection.description != blank %}
-      <div class="rte">
-        {{ collection.description }}
-      </div>
-    {% endif %}
+  <header class="pt-1" role="banner">
 
-    {% if collection.all_tags.size > 0 %}
-      <ul>
-        {% for tag in collection.all_tags %}
-          {% if current_tags contains tag %}
-            <li class="active">
-              {{ tag | link_to_remove_tag: tag }}
-            </li>
-          {% else %}
-            <li>
-              {{ tag | link_to_tag: tag }}
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    {% endif %}
+    <div id="collection-hero" class="jumbotron jumbotron-fluid position-relative mb-4">
+      <div class="container text-right position-absolute mw-100 mb-3 mr-3" style="bottom: 0px;">
+        <h1 class="d-none d-md-inline display-4 text-danger font-weight-bold collection-header">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <div class="d-none d-md-block rte text-light collection-description font-weight-bold">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="d-block d-md-none row pb-2 border-bottom">
+      <div class="col-12">
+        <h1 class="display-4 text-danger font-weight-bold collection-header text-center">{{ collection.title }}</h1>
+      </div>
+      {% if collection.description != blank %}
+        <div class="col-12">
+          <div class="rte collection-description font-weight-bold text-center">
+            {{ collection.description }}
+          </div>
+        </div>
+      {% endif %}
+      <div class="col-12">
+        {% include 'sub-collection-links' with collection: collection %}
+      </div>
+    </div>
+    <style>
+      #collection-hero {
+          height: 200px;
+          background-image: url("{{ collection.image | img_url: '1920x' }}");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+      }
+      /* desktop size adjustments */
+      @media screen and (min-width: 768px) {
+        #collection-hero {
+          height: 400px;
+        }
+      }
+    </style>
+
+    <div class="d-none d-md-block">
+      {% include 'sub-collection-grid' with collection: collection %}
+    </div>
   </header>
 
-  <div>
-    {% for product in collection.products %}
-      <div>
-        {% if product.featured_image != blank %}
-          <a href="{{ product.url | within: collection }}">
-            {% include 'responsive-image' with
-              image: product.featured_image,
-              max_width: 700,
-              max_height: 800
-            %}
-          </a>
-        {% endif %}
-
-        <p>
-          <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-        </p>
-        <p>
-          {% if product.compare_at_price > product.price %}
-
-            {% if product.price_varies %}
-              {%- assign sale_price = product.price | money -%}
-              {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
-            {% else %}
-              {{ 'products.product.on_sale' | t }}
-              {{ product.price | money }}
-            {% endif %}
-
-          {% else %}
-
-            {% if product.price_varies %}
-              {%- assign price = product.price | money -%}
-              {{ 'products.product.from_text_html' | t: price: price }}
-            {% else %}
-              {{ product.price | money }}
-            {% endif %}
-
-          {% endif %}
-
-          {% if product.compare_at_price > product.price %}
-            <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-            <s>{{ product.compare_at_price | money }}</s>
-          {% endif %}
-
-          {% unless product.available %}
-            {{ 'products.product.sold_out' | t }}
-          {% endunless %}
-        </p>
-      </div>
-
-    {% else %}
-      {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
-        {% for i in (1..8) %}
-          <a href="#">
-            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
-          </a>
-
-          <p>
-            <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
-          </p>
-
-          <p>
-            {{ 1999 | money }}
-          </p>
-        {% endfor %}
-      {% else %}
-        <p>{{ 'collections.general.no_matches' | t }}</p>
-      {% endif %}
-
-    {% endfor %}
+  <div id="collection-container" class="container m-0 p-0 mw-100 border-grey">
+    {% include 'collection-filtering-bar' %}
+    <div class="row pt-2">
+      {% for product in collection.products %}
+        <div class="col-xs-12 col-md-4 p-2 p-md-5 border-bottom">
+        <a href="{{ product.url }}">
+          <div class="container p-0">
+            <div class="row">
+              <div class="col-6 col-md-12 p-2">
+                <div id="image-{{ forloop.index }}">
+                </div>
+                <style>
+                  #image-{{forloop.index}} {
+                      height: 150px;
+                      background-image: url("{{ product.featured_image | img_url: '400x' }}");
+                      background-repeat: no-repeat;
+                      background-position: center;
+                      background-size: contain;
+                  }
+                  /* desktop size adjustments */
+                  @media screen and (min-width: 768px) {
+                    #image-{{forloop.index}} {
+                      height: 300px;
+                    }
+                  }
+                </style>
+              </div>
+              <div class="col-6 col-md-12 m-0 p-0 align-self-center">
+                <div class="row">
+                  <div class="col-12 p-0">
+                    <h6 class="card-title text-truncate m-0 font-weight-bold text-dark">{{ product.title }}</h6>
+                  </div>
+                  <div class="col-12 p-0 pt-2">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="text-danger">
+                        {% if product.price_varies %}
+                          {%- assign sale_price = product.price | money -%}
+                          {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                        {% else %}
+                          {{ 'products.product.on_sale' | t }}
+                          {{ product.price | money }}
+                        {% endif %}
+                      </span>
+                    {% else %}
+                      <span class="text-dark">
+                        {% if product.price_varies %}
+                          {%- assign price = product.price | money -%}
+                          {{ 'products.product.from_text_html' | t: price: price }}
+                        {% else %}
+                          {{ product.price | money }}
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                  </div>
+                  <div class="col-12 p-0 pt-3">
+                    <button type="button" class="btn btn-warning btn btn-block font-weight-bold" style="border-radius: 0px;">
+                      More Info
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </a>
+      {% endfor %}
+    </div>
   </div>
-
   {% if paginate.pages > 1 %}
-    {% include 'pagination' %}
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        {% include 'pagination' %}
+      </div>
+    </div>
   {% endif %}
 {% endpaginate %}
+
+<style>
+#collection-filter {
+  top: -1px;
+}
+
+.img-container {
+   position: relative;
+   width: 100%;
+   padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+
+.product-item {
+  height: 300px;
+}
+
+.product-img {
+  position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   max-height: 100%;
+   max-width: 100%;
+}
+
+  .collection-header {
+    font-size: 1.8rem;
+  }
+
+  .collection-description {
+    font-size: .8rem;
+  }
+
+
+	/* desktop size adjustments */
+	@media screen and (min-width: 768px) {
+    .collection-header {
+      font-size: 2.4rem;
+    }
+
+    .collection-description {
+      font-size: 1.2rem;
+    }
+	}
+</style>
