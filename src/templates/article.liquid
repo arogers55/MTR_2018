@@ -32,10 +32,28 @@
   {%- endunless -%}
 {%- endif -%}
 
-<article role="article" itemscope itemtype="http://schema.org/Article">
+<article class="container m-0 mw-100 p-0 mt-3 mb-5" role="article" itemscope itemtype="http://schema.org/Article">
+
+
+  <header class="mb-3 p-3 ml-5 mr-5" role="banner">
+    <h1 class="font-weight-bold mb-1">{{ article.title }}</h1>
+    {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+    <div class="row">
+      <div class="col p-0">
+        <small class="text-muted">
+          {{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}
+        </small>
+      </div>
+      <div class="col-auto">
+          {% if settings.social_sharing_blog %}
+            {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+          {% endif %}
+      </div>
+    </div>
+  </header>
 
   {% if article.image %}
-    <div class="hero-banner hero-banner--article lazyload" data-bgset="{% include 'responsive-bg-image', image: article.image %}"></div>
+    <div class="hero-banner hero-banner--article lazyload rounded ml-5 mr-5" data-bgset="{% include 'responsive-bg-image', image: article.image %}"></div>
 
     <noscript>
       {%- assign image_size = article.image.width | append: 'x' -%}
@@ -43,45 +61,51 @@
     </noscript>
   {% endif %}
 
-  <header role="banner">
-    <h1>{{ article.title }}</h1>
-    {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
-    <p>{{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}</p>
-  </header>
-
-  <div class="rte" itemprop="articleBody">
+  <div class="rte p-5" itemprop="articleBody">
     {{ article.content }}
   </div>
 
-  {% if article.tags.size > 0 %}
-    <ul>
-      {% for tag in article.tags %}
-        <li>
-          <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  <div class="row pl-5 pr-5 pb-3">
+      {% if article.tags.size > 0 %}
+          <div class="col-auto p-0">
+            <small class="text-muted font-weight-bold">Tags: </small>
+          </div>
+          {% for tag in article.tags %}
+            <div class="col-auto p-0 pr-1 pl-1">
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="badge badge-light text-muted">{{ tag }}</a>{% unless forloop.last %}{% endunless %}</a>
+            </div>
+          {% endfor %}
+      {% endif %}
+  </div>
 
-  {% if settings.social_sharing_blog %}
-    {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
-  {% endif %}
 
   {% if blog.comments_enabled? %}
-    <h3>{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+
+    <div class="row">
+      <div class="col-12 border-top border-bottom bg-light">
+        <h3 class="text-center text-muted m-5 align-middle">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+      </div>
+    </div>
 
     {% paginate article.comments by 5 %}
 
+
     <div id="comments">
-      {% if comment and comment.status and comment.id != blank and paginate.current_page == 1 %}
-        <p class="form-success">
-          {% if blog.moderated? and comment.status != 'published' %}
-            {{ 'blogs.comments.success_moderated' | t }}
-          {% else %}
-            {{ 'blogs.comments.success' | t }}
-          {% endif %}
-        </p>
-      {% endif %}
+      <div class="row">
+        <div class="p-1 pt-3 col-6 offset-3">
+        {% if comment and comment.status and comment.id != blank and paginate.current_page == 1 %}
+          <div class="alert alert-success m-0" role="alert">
+            <p class="form-success m-0">
+              {% if blog.moderated? and comment.status != 'published' %}
+                {{ 'blogs.comments.success_moderated' | t }}
+              {% else %}
+                {{ 'blogs.comments.success' | t }}
+              {% endif %}
+            </p>
+          </div>
+        {% endif %}
+        </div>
+      </div>
 
       {% if number_of_comments > 0 %}
         <ul>
@@ -119,50 +143,100 @@
     {% endpaginate %}
 
     {% form 'new_comment', article %}
-      <h3>{{ 'blogs.comments.title' | t }}</h3>
+    
 
-      {{ form.errors | default_errors }}
+      {% for error in form.errors %}
+        <div class="row">
+          <div class="p-1 pt-2 col-6 offset-3">
+            <div class="alert alert-danger m-0 p-1 pr-2 pl-2" role="alert">
+              <small>
+                {% if field == 'form' %}
+                  {{ form.errors.messages[error] }}
+                {% else %}
+                  {{ form.errors.translated_fields[error] }} - {{ form.errors.messages[error] }}
+                {% endif %}
+              </small>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
 
-      <label for="CommentAuthor" class="label-hidden">
-        {{ 'blogs.comments.name' | t }}
-      </label>
-      <input type="text"
-             name="comment[author]"
-             id="CommentAuthor"
-             class="{% if form.errors contains 'author' %}input-error{% endif %}"
-             placeholder="{{ 'blogs.comments.name' | t }}"
-             value="{{ form.author }}"
-             autocapitalize="words">
+      <div class="row">
+        <div class="p-1 pt-3 col-6 offset-3">
+          <h5 class="text-muted">{{ 'blogs.comments.title' | t }}</h3>
+        </div>
+      </div>
 
-      <label for="CommentEmail" class="label-hidden">
-        {{ 'blogs.comments.email' | t }}
-      </label>
-      <input type="email"
-             name="comment[email]"
-             id="CommentEmail"
-             class="{% if form.errors contains 'email' %}input-error{% endif %}"
-             placeholder="{{ 'blogs.comments.email' | t }}"
-             value="{{ form.email }}"
-             spellcheck="false"
-             autocomplete="off"
-             autocapitalize="off">
+      <div class="form-row">
+        <div class="form-group col-md-3 offset-3">
+          <label class="sr-only" for="CommentAuthor">{{ 'blogs.comments.name' | t }}</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">{{ 'blogs.comments.name' | t }}</div>
+            </div>
+            <input type="text"
+              name="comment[author]"
+              id="CommentAuthor"
+              class="form-control"
+              placeholder="First Name"
+              value="{{ form.author }}"
+              autocapitalize="words">
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label class="sr-only" for="CommentEmail">{{ 'blogs.comments.email' | t }}</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Email</div>
+              </div>
+              <input type="text"
+                name="comment[email]"
+                id="CommentEmail"
+                class="form-control"
+                placeholder="Email address"
+                value="{{ form.email }}"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off">
+            </div>
+        </div>
+      </div>
 
-      <label for="CommentBody" class="label-hidden">
-        {{ 'blogs.comments.message' | t }}
-      </label>
-      <textarea
-        name="comment[body]"
-        id="CommentBody"
-        class="{% if form.errors contains 'body' %}input-error{% endif %}"
-        placeholder="{{ 'blogs.comments.message' | t }}">
-        {{- form.body -}}
-      </textarea>
+      <div class="form-row">
+        <div class="form-group col-md-6 offset-3">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                {{ 'blogs.comments.message' | t }}
+              </span>
+            </div>
+            <textarea class="form-control"
+              name="comment[body]"
+              id="CommentBody"
+              class="{% if form.errors contains 'body' %}input-error{% endif %}"
+              placeholder="{{ 'blogs.comments.message' | t }}">
+              {{- form.body -}}</textarea>
+          </div>
+        </div>
+      </div>
 
-      {% if blog.moderated? %}
-        <p>{{ 'blogs.comments.moderated' | t }}</p>
-      {% endif %}
+      <div class="form-row">
+        <div class="form-group col-md-6 offset-3">
+          <div class="row">
+            <div class="col-auto pl-0 pr-0">
+              <input type="submit" class="btn btn-warning btn-block h-100" value="{{ 'blogs.comments.post' | t }}">
+            </div>
+            <div class="col pr-0">
+              {% if blog.moderated? %}
+                <div class="alert alert-warning m-0 p-1 pr-2 pl-2 h-100" role="alert">
+                  <small>{{ 'blogs.comments.moderated' | t }}</small>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <input type="submit" class="button" value="{{ 'blogs.comments.post' | t }}">
     {% endform %}
 
   {% endif %}

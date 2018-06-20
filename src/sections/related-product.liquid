@@ -7,7 +7,6 @@
 {% endcomment %}
 
 {% assign number_of_related_products = 4 %}
-{% assign number_of_rows = section.settings.related_grid_row %}
 
 {% comment %}
   Heading.
@@ -261,50 +260,6 @@
       "type": "text",
       "label": "Section title",
       "default": "Other fine products"
-    },
-    {
-      "type": "select",
-      "id": "related_grid_num",
-      "label": "Products per row (Desktop)",
-      "default": "4",
-      "options": [
-        {
-          "value": "2",
-          "label": "2"
-        },
-        {
-          "value": "3",
-          "label": "3"
-        },
-        {
-          "value": "4",
-          "label": "4"
-        },
-        {
-          "value": "5",
-          "label": "5"
-        }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "related_grid_row",
-      "label": "Number of rows (Desktop)",
-      "default": "1",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        },
-        {
-          "value": "3",
-          "label": "3"
-        }
-      ]
     }
   ]
 }

@@ -12,22 +12,6 @@
     </div>
   </div>
 
-  {% if blog.all_tags.size > 0 %}
-    <h2>{{ 'blogs.general.categories' | t }}</h2>
-
-    <ul>
-      {% for tag in blog.all_tags %}
-
-        {% if current_tags contains tag %}
-          <li>{{ tag }}</li>
-        {% else %}
-          <li>{{ tag | link_to_tag: tag }}</li>
-        {% endif %}
-
-      {% endfor %}
-    </ul>
-  {% endif %}
-
 
   {% comment %}
 
@@ -37,75 +21,21 @@
   <div class="row">
   {% for article in blog.articles %}
     <div class="col-xs-12 col-md-6 pt-3 pb-3">
-      <a class="card"  href="{{ article.url }}">
-        <img class="card-img-top" style="max-height: 300px;" src="{{ article.image | img_url: 400x }}">
-        <div class="card-body">
-          <h5 class="card-title mb-0">{{ article.title }}</h5>
+      <a class="text-dark" style="text-decoration: none;" href="{{ article.url }}">
+        <div class="hero-banner hero-banner--article lazyload rounded" data-bgset="{% include 'responsive-bg-image', image: article.image %}"></div>
+        <div class="bg-light p-2">
+          <h4 class="mb-0 font-weight-bold">{{ article.title }}</h4>
           <small class="text-muted">
             {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
             {{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}
           </small>
-          <p class="card-text mt-2">
+          <p class="mt-2">
             {{ article.content | strip_html | truncatewords: 100 }}
           </p>
           <button class="btn btn-warning">Read More ></button>
         </div>
       </a>
     </div>
-    {% comment %} <h3>
-      <a href="{{ article.url }}">{{ article.title }}</a>
-    </h3>
-
-    {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
-
-    <p>
-      {{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}
-    </p>
-
-    {% if article.image %}
-      <a href="{{ article.url }}">
-        {% include 'responsive-image' with
-          image: article.image,
-          max_width: 1024,
-          max_height: 1024
-        %}
-      </a>
-    {% endif %}
-
-    <div class="rte">
-      {% if article.excerpt.size > 0 %}
-        {{ article.excerpt }}
-      {% else %}
-        <p>
-          {{ article.content | strip_html | truncatewords: 100 }}
-        </p>
-      {% endif %}
-    </div>
-
-    {% if blog.comments_enabled? or article.tags.size > 0 %}
-      <ul>
-        {% if blog.comments_enabled? %}
-          <li>
-            <a href="{{ article.url }}#comments">
-              {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
-            </a>
-          </li>
-        {% endif %}
-
-        {% if article.tags.size > 0 %}
-          {% for tag in article.tags %}
-            <li>
-              <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
-              {% unless forloop.last %}, {% endunless %}
-            </li>
-          {% endfor %}
-        {% endif %}
-      </ul>
-    {% endif %}
-
-    <p>
-      <a href="{{ article.url }}">{{ 'blogs.article.read_more' | t }} &rarr;</a>
-    </p> {% endcomment %}
   {% endfor %}
   </div>
 

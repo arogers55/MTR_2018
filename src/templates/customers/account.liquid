@@ -1,43 +1,64 @@
-<h1>{{ 'customer.account.title' | t }}</h1>
 
-<h2>{{ 'customer.orders.title' | t }}</h2>
+<div class="row">
+  <div class="col">
+    <h1>{{ 'customer.account.title' | t }}</h1>
+  </div>
+</div>
 
-{% paginate customer.orders by 20 %}
-  {% if customer.orders.size != 0 %}
-    <table class="responsive-table">
-      <thead>
-        <tr>
-          <th>{{ 'customer.orders.order_number' | t }}</th>
-          <th>{{ 'customer.orders.date' | t }}</th>
-          <th>{{ 'customer.orders.payment_status' | t }}</th>
-          <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-          <th>{{ 'customer.orders.total' | t }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in customer.orders %}
-          <tr class="responsive-table-row">
-            <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
-            <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
-            <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
-            <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
-            <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>{{ 'customer.orders.none' | t }}</p>
-  {% endif %}
+<div class="row pb-5">
+  <div class="col">
+    <h2>{{ 'customer.orders.title' | t }}</h2>
 
-  {% if paginate.pages > 1 %}
-    {% include 'pagination' %}
-  {% endif %}
+    {% paginate customer.orders by 20 %}
+      {% if customer.orders.size != 0 %}
+        <table class="table border table-striped table-hover">
+          <thead>
+            <tr>
+              <th>{{ 'customer.orders.order_number' | t }}</th>
+              <th>{{ 'customer.orders.date' | t }}</th>
+              <th>{{ 'customer.orders.payment_status' | t }}</th>
+              <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+              <th>{{ 'customer.orders.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in customer.orders %}
+              <tr>
+                <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+                <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>{{ 'customer.orders.none' | t }}</p>
+      {% endif %}
 
-{% endpaginate %}
+      {% if paginate.pages > 1 %}
+        {% include 'pagination' %}
+      {% endif %}
 
-<h2>{{ 'customer.account.details' | t }}</h2>
+    {% endpaginate %}
 
-{{ customer.default_address | format_address }}
+  </div>
+  <div class="col-auto pl-5">
+    {% assign customer_address = customer.default_address %}
 
-<a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+    <h2>{{ customer_address.name }}</h2>
+    <address>
+      {{ customer_address.address1 }}</br>
+      {% if customer_address.address2 != "" %}
+        {{ customer_address.address2 }}</br>
+      {% endif %}
+      {{ customer_address.city }}, {{ customer_address.province }}</br>
+      {{ customer_address.country }}</br>
+      {{ customer_address.zip }}</br>
+      {{ customer_address.phone }}
+    </address>
+
+    <small><a class="text-right d-inline" href="/account/addresses">Manage Physical Addresses ({{ customer.addresses_count }})</a></small>
+  </div>
+</div>
