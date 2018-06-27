@@ -50,3 +50,14 @@ https://www.youtube.com/embed/YXCJzLZ2-hc
 ```
 8. Click **Done** button.
 9. The video will now be added to the product page on the site, and should show up when you go to that page.
+
+### Adding More Info Images to Product Pages
+In Product pages, it is possible to add additional images that can provide additional information for the product, i.e. spec sheets, etc.
+
+1. Go to the Product Page
+2. Add an Image to the product
+3. Edit the Alt Text for the image, adding the below tag
+```
+isMoreInfo
+```
+4. The image will no longer show up in the main product carousel, and will show up in the More Info section of the Product Page.
