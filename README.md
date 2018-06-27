@@ -7,7 +7,7 @@ MTR Shopify theme, created using Slate 1.0
 2. npm
 3. yarn (https://yarnpkg.com/lang/en/docs/install/#windows-stable)
 
-#### setup for development
+#### Setup for Development
 1. clone repo
 2. Download .env file from trello
 3. go to mtr-slate-theme base directory
@@ -16,3 +16,37 @@ MTR Shopify theme, created using Slate 1.0
 6. run command `npm install`
 7. run command `yarn start`
 8. if everything is correctly configured, your browser will open and load up the webpage
+
+## Theme Usage Details
+
+### Adding Youtube videos to products
+In order to add a Youtube video to a product, you need the YouTube Embedded Video ID. This can be obtained from the url for the video.
+
+##### Example of YouTube Video Key:
+```
+https://www.youtube.com/embed/YXCJzLZ2-hc
+                             ^ Video Key ^
+```
+
+Videos are added as images to the product via the Shopify Admin.
+Steps are below.
+
+1. Go to the Product that you would like to add a video to, in Shopify Admin.
+2. Scroll down to Images, and click **Add image from URL**.
+3. Paste **v this v** into the textbox that shows up, replacing *VIDEO_ID* with the Video Key from your Video URL.
+```
+http://img.youtube.com/vi/VIDEO_ID/#.jpg
+```
+4. Click *Add Image*.
+
+*Note: The image is now added to the product, but we still need to add the video url, so that the site will know what to load when the image is clicked.*
+
+5. Go to the image that you just added.
+6. Click **Edit Alt Text**.
+7. Paste your Embedded YouTube Video URL into the textbox that appears.
+##### Example
+```
+https://www.youtube.com/embed/YXCJzLZ2-hc
+```
+8. Click **Done** button.
+9. The video will now be added to the product page on the site, and should show up when you go to that page.
