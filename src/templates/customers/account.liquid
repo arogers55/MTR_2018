@@ -1,12 +1,12 @@
 
-<div class="row">
+<div class="row pt-3 pb-3">
   <div class="col">
     <h1>{{ 'customer.account.title' | t }}</h1>
   </div>
 </div>
 
 <div class="row pb-5">
-  <div class="col">
+  <div class="col-12 col-md-8">
     <h2>{{ 'customer.orders.title' | t }}</h2>
 
     {% paginate customer.orders by 20 %}
@@ -44,10 +44,11 @@
     {% endpaginate %}
 
   </div>
-  <div class="col-auto pl-5">
+  <div class="col-12 col-md-4 pl-5 pr-5 pt-5 pt-md-0">
     {% assign customer_address = customer.default_address %}
 
-    <h2>{{ customer_address.name }}</h2>
+    <h2>{{ 'customer.account.details' | t }}</h2>
+    <h5 class="font-weight-bold">{{ customer_address.name }}</h5>
     <address>
       {{ customer_address.address1 }}</br>
       {% if customer_address.address2 != "" %}

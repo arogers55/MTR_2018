@@ -31,7 +31,7 @@
       {% comment %} Product Image Carousel {% endcomment %}
       <div class="row pb-3">
         <div class="col">
-          <div id="carouselExampleIndicators" class="carousel slide">
+          <div id="product-image-carousel" class="carousel slide">
             <div class="carousel-inner carousel-height bg-light border">
 
             {% comment %} for each image of a product, if it's not a More Info Image,
@@ -92,11 +92,11 @@
                 {% endif %}
               {% endfor %}
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#product-image-carousel" role="button" data-slide="prev">
               <i class="fas fa-chevron-circle-left fa-lg text-secondary"></i>
               <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#product-image-carousel" role="button" data-slide="next">
               <i class="fas fa-chevron-circle-right fa-lg text-secondary"></i>
               <span class="sr-only">Next</span>
             </a>
@@ -113,7 +113,7 @@
           {% if image.alt contains 'isMoreInfo' %}
           {% else %}
             <div class="col-auto pt-1 pb-1">
-              <div id="indicator-{{ forloop.index }}" data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.index | minus: 1 }}" class="indicator-size img-thumbnail
+              <div id="indicator-{{ forloop.index }}" data-target="#product-image-carousel" data-slide-to="{{ forloop.index | minus: 1 }}" class="indicator-size img-thumbnail
                   {% if forloop.index == 1 %}
                     active
                   {% endif %}">
@@ -255,14 +255,15 @@
                     name="add"
                     data-add-to-cart
                     {% unless current_variant.available %}disabled="disabled"{% endunless %}
-                    class="btn btn-warning btn-lg btn-block h-100 mh-72px">
-                      <strong data-add-to-cart-text class="h4 font-weight-bold">
+                    class="btn btn-warning btn-block h-100 mh-72px"
+                    style="border-radius: 0px;">
+                      <span data-add-to-cart-text>
                         {% if current_variant.available %}
                           {{ 'products.product.add_to_cart' | t }}
                         {% else %}
                           {{ 'products.product.sold_out' | t }}
                         {% endif %}
-                      </strong>
+                      </span>
                     </button>
                   </div>
                 </div>

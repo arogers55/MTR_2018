@@ -1,128 +1,188 @@
-{% if cart.item_count > 0 %}
-  <h1>{{ 'cart.general.title' | t }}</h1>
+<div class="row" style="min-height: 500px;">
+  {% if cart.item_count > 0 %}
+    <div class="col-12 pt-3 pb-3">
+      <h1>{{ 'cart.general.title' | t }}</h1>
+    </div>
 
-  <form action="/cart" method="post" novalidate>
-    <table class="responsive-table">
-      <thead class="small--hide">
-        <tr>
-          <th colspan="2">{{ 'cart.label.product' | t }}</th>
-          <th>{{ 'cart.label.price' | t }}</th>
-          <th>{{ 'cart.label.quantity' | t }}</th>
-          <th>{{ 'cart.label.total' | t }}</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="col-12 border-top p-0">
+      <form action="/cart" method="post" novalidate>
 
-        {% for item in cart.items %}
+            {% for item in cart.items %}
 
-        {% comment %}
+            {% comment %}
 
-        Cart Item Template
-        =====================
-        The data-label attributes on <td> elements are mobile-friendly
-        helpers used for responsive-table labels
-        {% endcomment %}
+            Cart Item Template
+            =====================
+            The data-label attributes on <td> elements are mobile-friendly
+            helpers used for responsive-table labels
+            {% endcomment %}
 
-          <tr class="responsive-table-row">
+              <div class="row border-bottom bg-light">
 
-            <td data-label="{{ 'customer.order.product' | t }}">
+                <div class="col-xs-12 col-md-auto align-self-center p-3">
+                  <div class="w-100 text-center">
+                    <a style="line-height: 1.0;" class="btn btn-danger btn-sm p-1 text-center" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
+                      <small>{{ 'cart.general.remove' | t }}</small>
+                    </a>
+                  </div>
+                </div>
 
-              {% if item.image != blank %}
-                <a href="{{ item.url | within: collections.all }}">
-                  {{ item | img_url: '240x240' | img_tag: item.title }}
-                </a>
-              {% endif %}
+                <div class="col-xs-12 col-md-auto align-self-center" data-label="{{ 'customer.order.product' | t }}">
+                  <div class="w-100 text-center" style="min-height: 100px;">
+                    {% if item.image != blank %}
+                      <a href="{{ item.url | within: collections.all }}">
+                        {{ item | img_url: '128x' | img_tag: item.title, 'img-fluid' }}
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
 
-            </td>
-            <td>
-              <a href="{{ item.url }}">{{ item.product.title }}</a>
+                <div class="col-xs-12 col-md align-self-center pt-1 pb-1">
+                  <a class="font-weight-bold h5" href="{{ item.url }}">{{ item.product.title }}</a>
 
-              {% unless item.product.has_only_default_variant %}
-                <p>{{ item.variant.title }}</p>
-              {% endunless %}
-
-              <p>{{ item.vendor }}</p>
-
-              {%- assign property_size = item.properties | size -%}
-
-              {% if property_size > 0 %}
-                {% for p in item.properties %}
-                  {% unless p.last == blank %}
-                  {{ p.first }}:
-
-                  {% if p.last contains '/uploads/' %}
-                    <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
-                  {% else %}
-                    {{ p.last }}
-                  {% endif %}
-
+                  {% unless item.product.has_only_default_variant %}
+                    <p>{{ item.variant.title }}</p>
                   {% endunless %}
-                {% endfor %}
-              {% endif %}
 
-              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
-                <small>{{ 'cart.general.remove' | t }}</small>
-              </a>
-            </td>
-            <td data-label="{{ 'cart.label.price' | t }}">
-              {% if item.original_line_price != item.line_price %}
-                <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
-                {{ item.price | money }}
-                <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
-                <s>{{ item.original_price | money }}</s>
-              {% else %}
-                {{ item.price | money }}
-              {% endif %}
-            </td>
-            <td data-label="{{ 'cart.label.quantity' | t }}">
-              <input type="number"
-                     name="updates[]"
-                     id="updates_{{ item.key }}"
-                     value="{{ item.quantity }}"
-                     min="0"
-                     aria-label="{{ 'cart.general.item_quantity' | t }}">
-            </td>
-            <td data-label="{{ 'cart.label.total' | t }}">
-              {{ item.line_price | money }}
-            </td>
-          </tr>
+                  <p class="m-0"><small class="text-muted">Vendor: {{ item.vendor }}</small></p>
 
-        {% endfor %}
-      </tbody>
-    </table>
+                  {%- assign property_size = item.properties | size -%}
 
-    {% if settings.cart_notes_enable %}
-      <label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-      <textarea name="note" id="CartSpecialInstructions">{{ cart.note }}</textarea>
-    {% endif %}
+                  {% if property_size > 0 %}
+                    {% for p in item.properties %}
+                      {% unless p.last == blank %}
+                      {{ p.first }}:
 
-    <p>{{ 'cart.general.subtotal' | t }}</p>
-    <p>{{ cart.total_price | money }}</p>
-    {% if cart.total_discounts > 0 %}
-      <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
-    {% endif %}
-    <p>{{ 'cart.general.shipping_at_checkout' | t }}</p>
-    <input type="submit" name="update" value="{{ 'cart.general.update' | t }}">
-    <input type="submit" name="checkout" class="button" value="{{ 'cart.general.checkout' | t }}">
-  </form>
-{% else %}
-  <h1>{{ 'cart.general.title' | t }}</h1>
+                      {% if p.last contains '/uploads/' %}
+                        <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                      {% else %}
+                        {{ p.last }}
+                      {% endif %}
 
-  {% comment %}
-  Cart empty state
-  {% endcomment %}
-  <div class="supports-cookies">
-    <p>{{ 'cart.general.empty' | t }}</p>
-    <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
-  </div>
+                      {% endunless %}
+                    {% endfor %}
+                  {% endif %}
+                </div>
 
-  {% comment %}
-  Cart no cookies state
-  ---------------------
-  Browser cookies are required to use the cart. If cookies aren't enabled in the
-  browser a message is displayed prompting the user to enable them.
-  {% endcomment %}
-  <div class="supports-no-cookies">
-    <p>{{ 'cart.general.cookies_required' | t }}</p>
-  </div>
-{% endif %}
+                <div class="col-6 col-md-auto p-3 align-self-center text-center" data-label="{{ 'cart.label.price' | t }}">
+                  {% if item.original_line_price != item.line_price %}
+                    <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                    {{ item.price | money }}
+                    <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                    <span>{{ item.original_price | money }}</span>
+                  {% else %}
+                    <span>{{ item.price | money }} Each</span>
+                  {% endif %}
+                </div>
+
+                <div class="col-6 col-md-auto p-3 align-self-center" data-label="{{ 'cart.label.quantity' | t }}">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">Quantity</span>
+                    </div>
+                    <input type="number"
+                          class="form-control"
+                          name="updates[]"
+                          id="updates_{{ item.key }}"
+                          value="{{ item.quantity }}"
+                          min="0"
+                          aria-label="{{ 'cart.general.item_quantity' | t }}">
+                  </div>
+                </div>
+                <div class="col-12 col-md-auto p-3 align-self-center" data-label="{{ 'cart.label.total' | t }}">
+                  <p class="text-right w-100 m-0 font-weight-bold">Total: {{ item.line_price | money }}</p>
+                </div>
+              </div>
+
+            {% endfor %}
+
+            <div class="row justify-content-end pt-3">
+              <div class="col-auto font-weight-bold">
+                <h5>{{ 'cart.general.subtotal' | t }}</h5>
+              </div>
+            </div>
+
+            <div class="row justify-content-end pb-3">
+              <div class="col-auto">
+                <h4 class="font-weight-bold">{{ cart.total_price | money }}</h4>
+              </div>
+            </div>
+
+        {% if settings.cart_notes_enable %}
+          <div class="row">
+            <div class="col">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+                </div>
+                <textarea name="note" 
+                  class="form-control" 
+                  id="CartSpecialInstructions"
+                  aria-label="With textarea">
+                  {{ cart.note }}
+                </textarea>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="row pt-3 pb-5 justify-content-end">
+          <div class="col-12 col-md-auto p-3">
+            <div class="alert alert-warning m-0" role="alert">
+              <small>{{ 'cart.general.shipping_at_checkout' | t }}</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-auto align-self-center pr-0 pl-5">
+            <input type="submit" class="btn btn-light" name="update" value="{{ 'cart.general.update' | t }}">
+          </div>
+          <div class="col-6 col-md-auto align-self-center">
+            <input type="submit" name="checkout" class="btn btn-warning btn-lg" value="{{ 'cart.general.checkout' | t }}">
+          </div>
+        </div>
+
+        {% if cart.total_discounts > 0 %}
+          <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
+        {% endif %}
+
+        {% comment %} <input type="submit" name="update" value="{{ 'cart.general.update' | t }}">
+        <input type="submit" name="checkout" class="button" value="{{ 'cart.general.checkout' | t }}"> {% endcomment %}
+      </form>
+    </div>
+  {% else %}
+    <div class="col-12 pt-3 pb-3">
+      <h1>{{ 'cart.general.title' | t }}</h1>
+    </div>
+
+    {% comment %}
+    Cart empty state
+    {% endcomment %}
+    <div class="col-12">
+      <div class="row justify-content-center supports-cookies">
+        <div class="col-auto">
+          <div class="alert alert-secondary" role="alert">
+            <p class="m-1 text-center">{{ 'cart.general.empty' | t }}</p>
+            <p class="m-1 text-center">{{ 'cart.general.continue_browsing_html' | t }}</p>
+          </div>
+        </div>
+        <div class="col-12">
+        </div>
+      </div>
+    </div>
+
+    {% comment %}
+    Cart no cookies state
+    ---------------------
+    Browser cookies are required to use the cart. If cookies aren't enabled in the
+    browser a message is displayed prompting the user to enable them.
+    {% endcomment %}
+    <div class="col-12 p-0">
+      <div style="bottom:0px;" class="row w-100 position-absolute justify-content-center align-items-end supports-no-cookies">
+        <div class="col-auto">
+          <div class="alert alert-danger" role="alert">
+            <span>{{ 'cart.general.cookies_required' | t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

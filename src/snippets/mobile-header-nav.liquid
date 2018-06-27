@@ -62,6 +62,20 @@
             </li>
             {% endif %}
         {% endfor %}
+        {% if shop.customer_accounts_enabled %}
+            {%if customer %}
+                <li class="nav-item pl-3 pt-1">
+                    <a href="{{ link.url }}" class="nav-link pb-2 text-dark">Account</a>
+                </li>
+                <li class="nav-item pl-3">
+                    <a href="{{ link.url }}" class="nav-link pb-2 text-dark">Loggout</a>
+                </li>
+            {% else %}
+                <li class="nav-item pl-3 pt-1">
+                    <a class="nav-link text-dark" href="/account/login" id="customer_login_link">Login</a>
+                </li>
+            {% endif %}
+        {% endif %}
         </ul>
     </div>
     </nav>

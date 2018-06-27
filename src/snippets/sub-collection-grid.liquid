@@ -8,21 +8,59 @@
 
     Usage:
     In collection template add following line
-    {% include sub-collection-grid with collection: collection %}
+    {% include sub-collection-grid with collection: collection-name %}
+
+    Implementation Notes:
+    Shopify doesn't natively support sub-collections. This implementation is pretty simple,
+    but it requires some things to be set up correctly in order for it to work.
+
+    Essentially, we use the navigation features of shopify to implement the subcollection
+    heirarchy. When a collection loads, we get the handle of that collection, and use it 
+    to look up a linklist in our navigation links. 
+
+    If a linklist is found that matches the name of the current collection, we loop through
+    that linklist's children. Each of those child links needs to be a link to a collection in
+    order for us to load them as subcollections in the currect collection.
+
+    Example:
+    Loaded Collection: Medical
+
+    Searches for handle 'medical' in linklist
+
+    Finds medical linklist
+
+    Loops through medical linklist
+
+    Finds IV Supplies, Respiratory and Oxygen, Patient Transport, etc. links
+
+    For each on those links, we fetch the collection that they are linked to, 
+    and render those into a grid.
+
 {% endcomment %}
 
 {% if linklists[collection.handle].links[0] != nil %}
     <div class="row">
-    <div class="col">
-        <header class="section-header">
-            <h4 class="font-weight-bold m-0 pt-3 pb-3">Sub-Categories</h4>
-        </header>
-    </div>
+        <div class="col">
+            <header class="section-header">
+                <h4 class="font-weight-bold m-0 pt-3 pb-3">Sub-Categories</h4>
+            </header>
+        </div>
     </div>
 {% endif %}
 
+{% comment %} Loops through the first three subcollections of the given collection,
+    laying them out as a grid. {% endcomment %}
 <div id="subcollections" class="row mb-4">
     {% for link in linklists[collection.handle].links %}
+        {% comment %} 
+            if the loop has already looped 3 times, end the loop. 
+            To change the number of subcollections are shown in the grid,
+            change the number below to the desired number plus 1.
+        {% endcomment %}
+        {% if forloop.index == 4 %}
+            {% break %}
+        {% endif %}
+        
         {% assign sub_collection = link.object %}
         <a href="{{ link.url }}" class="col-4 subcollection p-1">
             <div id="subcollection-{{ forloop.index }}" class="row justify-content-end w-100 h-100">

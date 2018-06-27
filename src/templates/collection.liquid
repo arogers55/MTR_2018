@@ -1,3 +1,11 @@
+{% comment %} 
+  Collection Template page
+
+  The collection page shows the collection hero image at the top,
+  followed by a grid of three subcollections, followed by 12 items 
+  per page.
+
+{% endcomment %}
 {% paginate collection.products by 12 %}
   <header class="pt-1" role="banner">
 
@@ -55,13 +63,13 @@
         <a href="{{ product.url }}">
           <div class="container p-0">
             <div class="row">
-              <div class="col-6 col-md-12 p-2">
+              <div class="col-6 col-md-12 p-4">
                 <div id="image-{{ forloop.index }}">
                 </div>
                 <style>
                   #image-{{forloop.index}} {
                       height: 150px;
-                      background-image: url("{{ product.featured_image | img_url: '400x' }}");
+                      background-image: url("{{ product.featured_image | img_url: 'x150' }}");
                       background-repeat: no-repeat;
                       background-position: center;
                       background-size: contain;
@@ -110,8 +118,8 @@
               </div>
             </div>
           </div>
-        </div>
         </a>
+        </div>
       {% endfor %}
     </div>
   </div>

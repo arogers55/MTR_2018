@@ -1,0 +1,12 @@
+<div id="search-filter" class="row pb-2 pt-2 border-top border-bottom bg-light sticky-top justify-content-between" style="top: -1px;">
+  <div class="col-xs-12 col-md-auto text-center pb-2 pb-md-0 align-self-center">
+    <span class="font-weight-bold">SHOWING: {{ paginate.current_offset | plus:1 }} - {{ paginate.current_offset | plus:paginate.page_size | at_most:search.results_count }} of {{search.results_count}}</span>
+  </div>
+  <div class="col-xs-12 col-md-auto">
+    <div class="row justify-content-center">
+      <div class="col-auto pl-0 align-self-center">
+        <span class="align-middle font-weight-bold text-center w-100">Search results for '{{ search.terms }}'</span> 
+      </div>  
+    </div>
+  </div>
+</div>

@@ -35,7 +35,7 @@
 <article class="container m-0 mw-100 p-0 mt-3 mb-5" role="article" itemscope itemtype="http://schema.org/Article">
 
 
-  <header class="mb-3 p-3 ml-5 mr-5" role="banner">
+  <header class="mb-3 p-0 ml-5 mr-5" role="banner">
     <h1 class="font-weight-bold mb-1">{{ article.title }}</h1>
     {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
     <div class="row">
@@ -81,163 +81,192 @@
 
   {% if blog.comments_enabled? %}
 
-    <div class="row">
-      <div class="col-12 border-top border-bottom bg-light">
-        <h3 class="text-center text-muted m-5 align-middle">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+    <div class="row pb-5 pt-5">
+      <div class="col-3">
+        <h3>Comments</h3>
       </div>
-    </div>
-
-    {% paginate article.comments by 5 %}
-
-
-    <div id="comments">
-      <div class="row">
-        <div class="p-1 pt-3 col-6 offset-3">
-        {% if comment and comment.status and comment.id != blank and paginate.current_page == 1 %}
-          <div class="alert alert-success m-0" role="alert">
-            <p class="form-success m-0">
-              {% if blog.moderated? and comment.status != 'published' %}
-                {{ 'blogs.comments.success_moderated' | t }}
-              {% else %}
-                {{ 'blogs.comments.success' | t }}
-              {% endif %}
-            </p>
-          </div>
+      <div class="col-12 p-0 mt-3">
+        {% if number_of_comments == 0 %}
+          <h3 class="text-center text-muted m-5 align-middle">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
         {% endif %}
-        </div>
-      </div>
-
-      {% if number_of_comments > 0 %}
-        <ul>
-          {% comment %}
-            Display comment from URL parameters if it is waiting moderation
-            We added "comment.id" check to make sure we don't display markup if there are form errors
-          {% endcomment %}
-          {% if comment and comment.status != 'published' and comment.id != blank %}
-            <li id="{{ comment.id }}">
-              <div class="rte">
-                {{ comment.content }}
-              </div>
-              {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
-              <p>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
-            </li>
-          {% endif %}
-
-          {% for comment in article.comments %}
-            <li id="{{ comment.id }}">
-              <div class="rte">
-                {{ comment.content }}
-              </div>
-              {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
-              <p>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
-            </li>
-          {% endfor %}
-        </ul>
-
-        {% if paginate.pages > 1 %}
-          {% include 'pagination' %}
-        {% endif %}
-      {% endif %}
-    </div>
-
-    {% endpaginate %}
-
-    {% form 'new_comment', article %}
-    
-
-      {% for error in form.errors %}
-        <div class="row">
-          <div class="p-1 pt-2 col-6 offset-3">
-            <div class="alert alert-danger m-0 p-1 pr-2 pl-2" role="alert">
-              <small>
-                {% if field == 'form' %}
-                  {{ form.errors.messages[error] }}
-                {% else %}
-                  {{ form.errors.translated_fields[error] }} - {{ form.errors.messages[error] }}
-                {% endif %}
-              </small>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-
-      <div class="row">
-        <div class="p-1 pt-3 col-6 offset-3">
-          <h5 class="text-muted">{{ 'blogs.comments.title' | t }}</h3>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-md-3 offset-3">
-          <label class="sr-only" for="CommentAuthor">{{ 'blogs.comments.name' | t }}</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">{{ 'blogs.comments.name' | t }}</div>
-            </div>
-            <input type="text"
-              name="comment[author]"
-              id="CommentAuthor"
-              class="form-control"
-              placeholder="First Name"
-              value="{{ form.author }}"
-              autocapitalize="words">
-          </div>
-        </div>
-        <div class="form-group col-md-3">
-            <label class="sr-only" for="CommentEmail">{{ 'blogs.comments.email' | t }}</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Email</div>
-              </div>
-              <input type="text"
-                name="comment[email]"
-                id="CommentEmail"
-                class="form-control"
-                placeholder="Email address"
-                value="{{ form.email }}"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="off">
-            </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-md-6 offset-3">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                {{ 'blogs.comments.message' | t }}
-              </span>
-            </div>
-            <textarea class="form-control"
-              name="comment[body]"
-              id="CommentBody"
-              class="{% if form.errors contains 'body' %}input-error{% endif %}"
-              placeholder="{{ 'blogs.comments.message' | t }}">
-              {{- form.body -}}</textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-md-6 offset-3">
-          <div class="row">
-            <div class="col-auto pl-0 pr-0">
-              <input type="submit" class="btn btn-warning btn-block h-100" value="{{ 'blogs.comments.post' | t }}">
-            </div>
-            <div class="col pr-0">
-              {% if blog.moderated? %}
-                <div class="alert alert-warning m-0 p-1 pr-2 pl-2 h-100" role="alert">
-                  <small>{{ 'blogs.comments.moderated' | t }}</small>
+        {% paginate article.comments by 5 %}
+          <div id="comments">
+              {% if comment and comment.status and comment.id != blank and paginate.current_page == 1 %}
+                <div class="row">
+                  <div class="p-1 pt-3 pb-3 col-6 offset-3">
+                    <div class="alert alert-success m-0" role="alert">
+                      <p class="form-success m-0">
+                        {% if blog.moderated? and comment.status != 'published' %}
+                          {{ 'blogs.comments.success_moderated' | t }}
+                        {% else %}
+                          {{ 'blogs.comments.success' | t }}
+                        {% endif %}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
+
+            {% if number_of_comments > 0 %}
+              <table class="table table-striped m-0">
+                <tbody>
+                  {% comment %}
+                    Display comment from URL parameters if it is waiting moderation
+                    We added "comment.id" check to make sure we don't display markup if there are form errors
+                  {% endcomment %}
+                  {% if comment and comment.status != 'published' and comment.id != blank %}
+                    <tr>
+                      <td>
+                        <blockquote class="blockquote pl-5">
+                          <p id="{{ comment.id }}" class="rte">
+                            {{ comment.content }}
+                          </p>
+                          <footer class="blockquote-footer">
+                            <small>{{ comment.author }}</small>
+                          </footer>
+                        </blockquote>
+                      </td>
+                    </tr>
+                  {% endif %}
+
+                  {% for comment in article.comments %}
+                    <tr>
+                      <td>
+                        <blockquote class="blockquote pl-5">
+                          <p id="{{ comment.id }}" class="rte">
+                            {{ comment.content }}
+                          </p>
+                          {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+                          <footer class="blockquote-footer">
+                            <small>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</small>
+                          </footer>
+                        </blockquote>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+                {% if paginate.pages > 1 %}
+                  {% include 'pagination' %}
+                {% endif %}
+            {% endif %}
+          </div>
+        {% endpaginate %}
+      </div>
+    </div>
+
+    {% if customer %}
+
+      {% form 'new_comment', article %}
+      
+        {% for error in form.errors %}
+          <div class="row">
+            <div class="p-1 pt-2 col-12 col-md-6 offset-md-3">
+              <div class="alert alert-danger m-0 p-1 pr-2 pl-2" role="alert">
+                <small>
+                  {% if field == 'form' %}
+                    {{ form.errors.messages[error] }}
+                  {% else %}
+                    {{ form.errors.translated_fields[error] }} - {{ form.errors.messages[error] }}
+                  {% endif %}
+                </small>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="row">
+          <div class="p-1 pt-3 pl-5 pl-md-1 col-auto col-md-6 offset-md-3">
+            <h5 class="text-muted">{{ 'blogs.comments.title' | t }}</h3>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group pl-5 pl-md-1 col-auto col-md-6 offset-md-3">
+            <label class="sr-only" for="CommentAuthor">{{ 'blogs.comments.name' | t }}</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text bg-dark text-light border-dark">Customer Name</div>
+              </div>
+              <div class="input-group-append">
+              {% capture customer_name %}
+                {{ customer.first_name }} {{ customer.last_name | truncate: 2, '.' }}
+              {% endcapture %} 
+                <div class="input-group-text border-dark">{{ customer_name }}</div>
+              </div>
+              <input type="text"
+                name="comment[author]"
+                id="CommentAuthor"
+                class="form-control d-none"
+                placeholder="First Name"
+                value="{{ customer_name }}"
+                autocapitalize="words">
+            </div>
+          </div>
+          <div class="form-group pl-5 pl-md-1 col-md-6 offset-md-3">
+              <label class="sr-only" for="CommentEmail">{{ 'blogs.comments.email' | t }}</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text bg-dark text-light border-dark">Customer Email</div>
+                </div>
+                <div class="input-group-append">
+                  <div class="input-group-text border-dark">{{ customer.email }}</div>
+                </div>
+                <input type="text"
+                  name="comment[email]"
+                  id="CommentEmail"
+                  class="form-control d-none"
+                  placeholder="Email address"
+                  value="{{ customer.email }}"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocapitalize="off">
+              </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group pl-5 pr-5 pr-md-1 pl-md-1 col-12 col-md-6 offset-md-3">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-light border-dark">
+                  {{ 'blogs.comments.message' | t }}
+                </span>
+              </div>
+              <textarea class="form-control border-dark"
+                name="comment[body]"
+                id="CommentBody"
+                class="{% if form.errors contains 'body' %}input-error{% endif %}"
+                placeholder="{{ 'blogs.comments.message' | t }}"
+                maxlength="250"
+                style="height: 100px; resize: none">
+                {{- form.body -}}
+              </textarea>
             </div>
           </div>
         </div>
-      </div>
 
-    {% endform %}
+        <div class="form-row">
+          <div class="form-group pl-5 pl-md-1 col-auto col-md-6 offset-md-3">
+            <div class="row">
+              <div class="col-auto pl-0 pr-0">
+                <input type="submit" class="btn btn-warning btn-block h-100" value="{{ 'blogs.comments.post' | t }}">
+              </div>
+              <div class="col pr-0">
+                {% if blog.moderated? %}
+                  <div class="alert alert-warning m-0 p-1 pr-2 pl-2 h-100" role="alert">
+                    <small>{{ 'blogs.comments.moderated' | t }}</small>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endform %}
+
+    {% endif %}
 
   {% endif %}
 

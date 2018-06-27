@@ -85,14 +85,14 @@
     <div class="col-xs-12 col-md-4 col-md-4 mb-3 mb-md-0">
       <div class="row pb-2">
         <div class="col">
-          <h4><strong>{{ section.settings.newsletter-subheading }}</strong></h4>
+          <h4 class="text-center"><strong>{{ section.settings.newsletter-subheading }}</strong></h4>
         </div>
       </div>
       <div class="row mb-2 pb-2">
         <div class="col align-self-center">
           {% form 'customer' %}
             {% if form.posted_successfully? %}
-              <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+              <h5 class="m-0 text-center">{{ 'general.newsletter_form.confirmation' | t }}</h5>
             {% else %}
             {{ form.errors | default_errors }}
             <div class="input-group">
@@ -109,15 +109,15 @@
                     <span>{{ 'general.newsletter_form.submit' | t }}</span>
                   </button>
                 </div>
-              {% endif %}
-            </div>
+              </div>
+            {% endif %}
           {% endform %}
         </div>
       </div>
       <div class="row">
         <div class="col">
           <div class="alert alert-primary test-review-height" role="alert">
-            Reviews Here
+            Reviews Here - REQUIRES YOTPO PRO
           </div>
         </div>
       </div>

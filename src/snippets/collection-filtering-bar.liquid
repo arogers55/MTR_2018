@@ -1,6 +1,6 @@
 <div id="collection-filter" class="row pb-2 pt-2 border-top border-bottom bg-light sticky-top justify-content-between">
     <div class="col-xs-12 col-md-auto text-center pb-2 pb-md-0 align-self-center">
-        <span class="font-weight-bold">SHOWING: {{ paginate.current_offset | plus:1 }} - {{ paginate.current_offset | plus:paginate.page_size }} of {{collection.all_products_count}}</span>
+        <span class="font-weight-bold">SHOWING: {{ paginate.current_offset | plus:1 }} - {{ paginate.current_offset | plus:paginate.page_size | at_most:collection.all_products_count }} of {{collection.all_products_count}}</span>
     </div>
     <div class="col-xs-12 col-md-auto">
         <div class="row">

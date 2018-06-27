@@ -36,16 +36,17 @@ if ($newAddressForm.length) {
   });
 
   // Toggle new/edit address forms
-  $('.address-new-toggle').on('click', () => {
-    $newAddressForm.toggleClass('hide');
-  });
+  // $('.address-new-toggle').on('click', () => {
+  //   $newAddressForm.toggleClass('hide');
+  // });
 
-  $('.address-edit-toggle').on('click', function() {
-    const formId = $(this).data('form-id');
-    $(`#EditAddress_${formId}`).toggleClass('hide');
-  });
+  // $('.address-edit-toggle').on('click', function() {
+  //   const formId = $(this).data('form-id');
+  //   $(`#EditAddress_${formId}`).toggleClass('hide');
+  // });
 
   $('.address-delete').on('click', function() {
+    console.log("Deleting");
     const $el = $(this);
     const formId = $el.data('form-id');
     const confirmMessage = $el.data('confirm-message');

@@ -1,11 +1,16 @@
-    <form action="/search" method="get" role="search" class="w-100 pr-3 pl-3">
-      <div class="input-group input-group-sm">
-        <input type="text" class="form-control" aria-label="Search" placeholder="{{ 'general.search.placeholder' | t }}">
-        <div class="input-group-append">
-          <button class="input-group btn btn-warning"type="submit">
-            {% include 'icon-search' %}
-          </button>
-        </div>
-      </div>
-    </form>
-
+<form action="/search" method="get" role="search" class="pr-3 pl-3">
+  <div class="input-group input-group-sm">
+    <input type="search" 
+      name="q"
+      id="Search"
+      class="form-control" 
+      aria-label="Search" 
+      placeholder="{{ 'general.search.placeholder' | t }}" 
+      value="{{ search.terms | escape }}">
+    <div class="input-group-append">
+      <button class="input-group btn btn-warning"type="submit">
+        {% include 'icon-search' %}
+      </button>
+    </div>
+  </div>
+</form>

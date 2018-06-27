@@ -13,26 +13,8 @@ const selectors = {
   hideRecoverPasswordLink: '#HideRecoverPasswordLink',
 };
 
-function onShowHidePasswordForm(evt) {
-  evt.preventDefault();
-  toggleRecoverPasswordForm();
-}
-
 function checkUrlHash() {
   const hash = window.location.hash;
-
-  // Allow deep linking to recover password form
-  if (hash === '#recover') {
-    toggleRecoverPasswordForm();
-  }
-}
-
-/**
- *  Show/Hide recover password form
- */
-function toggleRecoverPasswordForm() {
-  $('#RecoverPasswordForm').toggleClass('hide');
-  $('#CustomerLoginForm').toggleClass('hide');
 }
 
 /**
@@ -55,5 +37,4 @@ if ($(selectors.recoverPasswordForm).length) {
   resetPasswordSuccess();
 
   $(selectors.recoverPasswordForm).on('click', onShowHidePasswordForm);
-  $(selectors.hideRecoverPasswordLink).on('click', onShowHidePasswordForm);
 }
