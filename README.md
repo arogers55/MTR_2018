@@ -34,6 +34,7 @@ Steps are below.
 1. Go to the Product that you would like to add a video to, in Shopify Admin.
 2. Scroll down to Images, and click **Add image from URL**.
 3. Paste **v this v** into the textbox that shows up, replacing *VIDEO_ID* with the Video Key from your Video URL.
+##### Youtube Video Thumbnail URL
 ```
 http://img.youtube.com/vi/VIDEO_ID/#.jpg
 ```
